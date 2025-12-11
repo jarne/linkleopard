@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { saveProcessedImage } from "@/app/lib/image-processor"
+import { saveProcessedImage } from "@/app/admin/lib/image-processor"
 
 export async function POST(req: Request) {
     const formData = await req.formData()
