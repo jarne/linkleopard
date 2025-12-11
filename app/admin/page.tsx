@@ -8,6 +8,8 @@ import {
     listLinksAction,
     updateLinkAction,
     scrapeLinkMetadataAction,
+    getInfoAction,
+    updateInfoAction,
 } from "./actions"
 
 export default function AdminPanel() {
@@ -16,7 +18,11 @@ export default function AdminPanel() {
     const [isUploading, setIsUploading] = useState(false)
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [iconPreview, setIconPreview] = useState<string | null>(null)
+    const [profilePicPreview, setProfilePicPreview] = useState<string | null>(
+        null
+    )
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const profilePicInputRef = useRef<HTMLInputElement | null>(null)
     const scrapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const [editingId, setEditingId] = useState<number | null>(null)
@@ -25,9 +31,20 @@ export default function AdminPanel() {
         url: "",
         icon: "",
     })
+    const [profileData, setProfileData] = useState({
+        name: "",
+        bio: "",
+        profilePicture: "",
+    })
 
     useEffect(() => {
         listLinksAction().then(setLinks)
+        getInfoAction().then((data) => {
+            if (data) {
+                setProfileData(data)
+                setProfilePicPreview(data.profilePicture)
+            }
+        })
     }, [])
 
     // Auto-scrape metadata when URL changes
@@ -103,6 +120,47 @@ export default function AdminPanel() {
         }
     }
 
+    const handleProfilePicUpload = async (file: File) => {
+        setIsUploading(true)
+        setUploadError(null)
+        try {
+            const form = new FormData()
+            form.append("file", file)
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: form,
+            })
+
+            if (!res.ok) {
+                throw new Error("Upload failed")
+            }
+
+            const data = await res.json()
+            const url = data.url as string
+            setProfileData((prev) => ({ ...prev, profilePicture: url }))
+            setProfilePicPreview(url)
+        } catch (err) {
+            console.error(err)
+            setUploadError("Upload failed. Please try again.")
+        } finally {
+            setIsUploading(false)
+        }
+    }
+
+    const handleSaveProfile = () => {
+        if (
+            !profileData.name ||
+            !profileData.bio ||
+            !profileData.profilePicture
+        )
+            return
+
+        startTransition(async () => {
+            await updateInfoAction(profileData)
+        })
+    }
+
     const handleSave = () => {
         if (!formData.name || !formData.url || !formData.icon) return
 
@@ -146,7 +204,7 @@ export default function AdminPanel() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
-            <div className="max-w-4xl mx-auto px-4 py-12">
+            <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
                         LinkLeopard
@@ -155,6 +213,101 @@ export default function AdminPanel() {
                         Manage your shared bio links in the admin panel
                     </p>
                 </div>
+
+                {/* Profile Info Section */}
+                <div className="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                        Profile Information
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Profile Picture
+                            </label>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3">
+                                    <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                        {profilePicPreview ? (
+                                            /* eslint-disable-next-line @next/next/no-img-element */
+                                            <img
+                                                src={profilePicPreview}
+                                                alt="Profile preview"
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <span className="text-gray-400">
+                                                +
+                                            </span>
+                                        )}
+                                    </span>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0]
+                                            if (file)
+                                                handleProfilePicUpload(file)
+                                        }}
+                                        disabled={isUploading}
+                                        className="flex-1 text-sm text-gray-700 dark:text-gray-200"
+                                        ref={profilePicInputRef}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Name
+                            </label>
+                            <input
+                                type="text"
+                                value={profileData.name}
+                                onChange={(e) =>
+                                    setProfileData({
+                                        ...profileData,
+                                        name: e.target.value,
+                                    })
+                                }
+                                placeholder="Your Name"
+                                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Bio
+                            </label>
+                            <textarea
+                                value={profileData.bio}
+                                onChange={(e) =>
+                                    setProfileData({
+                                        ...profileData,
+                                        bio: e.target.value,
+                                    })
+                                }
+                                placeholder="Your bio"
+                                rows={3}
+                                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            />
+                        </div>
+                    </div>
+                    <div className="mt-4">
+                        <button
+                            onClick={handleSaveProfile}
+                            disabled={
+                                isPending ||
+                                isUploading ||
+                                !profileData.name ||
+                                !profileData.bio ||
+                                !profileData.profilePicture
+                            }
+                            className="px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200"
+                        >
+                            {isPending ? "Saving..." : "Save Profile"}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Links Management Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
                         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-4">

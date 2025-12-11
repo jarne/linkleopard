@@ -7,6 +7,7 @@ import {
     updateLink,
     type Link,
 } from "@/app/lib/link"
+import { getInfo, updateInfo, type Info } from "@/app/lib/info"
 import { getUrlTitle, getUrlFavicon } from "./lib/scraper"
 import { randomUUID } from "crypto"
 import { mkdir, writeFile } from "fs/promises"
@@ -78,4 +79,12 @@ async function downloadAndSaveFavicon(faviconUrl: string): Promise<string> {
     await writeFile(filepath, Buffer.from(buffer))
 
     return `/uploads/${filename}`
+}
+
+export async function getInfoAction(): Promise<Info | undefined> {
+    return getInfo()
+}
+
+export async function updateInfoAction(data: Info): Promise<Info> {
+    return updateInfo(data)
 }

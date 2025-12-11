@@ -1,20 +1,18 @@
 import Image from "next/image"
 import { getAllLinks, type Link } from "./lib/link"
-
-interface Profile {
-    name: string
-    bio: string
-    profileImage: string
-}
-
-const profile: Profile = {
-    name: "Jane Doe",
-    bio: "Designer & Developer | Creating beautiful digital experiences",
-    profileImage: "/profile.jpg",
-}
+import { getInfo } from "./lib/info"
 
 export default async function Home() {
     const links: Link[] = await getAllLinks()
+    const info = await getInfo()
+
+    // Fallback values if no info exists
+    const profile = {
+        name: info?.name || "Your Name",
+        bio: info?.bio || "Add your bio in the admin panel",
+        profileImage: info?.profilePicture || "/profile.jpg",
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 px-4 py-12">
             <main className="w-full max-w-md">
