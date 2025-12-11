@@ -12,6 +12,9 @@ import {
 export default function AdminPanel() {
     const [links, setLinks] = useState<Link[]>([])
     const [isPending, startTransition] = useTransition()
+    const [isUploading, setIsUploading] = useState(false)
+    const [uploadError, setUploadError] = useState<string | null>(null)
+    const [iconPreview, setIconPreview] = useState<string | null>(null)
 
     const [editingId, setEditingId] = useState<number | null>(null)
     const [formData, setFormData] = useState({
@@ -24,9 +27,41 @@ export default function AdminPanel() {
         listLinksAction().then(setLinks)
     }, [])
 
+    const isImage = (value: string) =>
+        value.startsWith("/") || value.startsWith("http")
+
     const handleEditClick = (link: Link) => {
         setFormData({ name: link.name, url: link.url, icon: link.icon })
+        setIconPreview(isImage(link.icon) ? link.icon : null)
         setEditingId(link.id)
+    }
+
+    const handleIconUpload = async (file: File) => {
+        setIsUploading(true)
+        setUploadError(null)
+        try {
+            const form = new FormData()
+            form.append("file", file)
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: form,
+            })
+
+            if (!res.ok) {
+                throw new Error("Upload failed")
+            }
+
+            const data = await res.json()
+            const url = data.url as string
+            setFormData((prev) => ({ ...prev, icon: url }))
+            setIconPreview(url)
+        } catch (err) {
+            console.error(err)
+            setUploadError("Upload failed. Please try again.")
+        } finally {
+            setIsUploading(false)
+        }
     }
 
     const handleSave = () => {
@@ -63,6 +98,7 @@ export default function AdminPanel() {
 
     const resetForm = () => {
         setFormData({ name: "", url: "", icon: "" })
+        setIconPreview(null)
         setEditingId(null)
     }
 
@@ -86,20 +122,52 @@ export default function AdminPanel() {
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Icon
+                                        Icon (upload image)
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={formData.icon}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                icon: e.target.value,
-                                            })
-                                        }
-                                        placeholder="🔗 (emoji or text)"
-                                        className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
+                                    <div className="space-y-3">
+                                        <div className="flex items-center gap-3">
+                                            <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xl">
+                                                {iconPreview ? (
+                                                    /* eslint-disable-next-line @next/next/no-img-element */
+                                                    <img
+                                                        src={iconPreview}
+                                                        alt="Icon preview"
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : formData.icon ? (
+                                                    <span className="text-lg truncate px-1">
+                                                        {formData.icon}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-gray-400">
+                                                        +
+                                                    </span>
+                                                )}
+                                            </span>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file =
+                                                        e.target.files?.[0]
+                                                    if (file)
+                                                        handleIconUpload(file)
+                                                }}
+                                                disabled={isUploading}
+                                                className="flex-1 text-sm text-gray-700 dark:text-gray-200"
+                                            />
+                                        </div>
+                                        {uploadError && (
+                                            <p className="text-sm text-red-600">
+                                                {uploadError}
+                                            </p>
+                                        )}
+                                        {isUploading && (
+                                            <p className="text-sm text-gray-500">
+                                                Uploading icon...
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -140,6 +208,7 @@ export default function AdminPanel() {
                                         onClick={handleSave}
                                         disabled={
                                             isPending ||
+                                            isUploading ||
                                             !formData.name ||
                                             !formData.url ||
                                             !formData.icon
@@ -176,8 +245,17 @@ export default function AdminPanel() {
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-4 flex-1">
-                                                <div className="text-3xl">
-                                                    {link.icon}
+                                                <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                    {isImage(link.icon) ? (
+                                                        /* eslint-disable-next-line @next/next/no-img-element */
+                                                        <img
+                                                            src={link.icon}
+                                                            alt={link.name}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <span>{link.icon}</span>
+                                                    )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
