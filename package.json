@@ -12,6 +12,7 @@
     "dependencies": {
         "@libsql/client": "^0.15.15",
         "drizzle-orm": "^0.45.1",
+        "iron-session": "^8.0.4",
         "metascraper": "^5.49.7",
         "metascraper-logo-favicon": "^5.49.7",
         "metascraper-title": "^5.49.7",
