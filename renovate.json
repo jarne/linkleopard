@@ -1,0 +1,33 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        ":semanticPrefixFixDepsChoreOthers",
+        ":ignoreModulesAndTests",
+        ":automergePatch",
+        "group:monorepos",
+        "group:recommended",
+        "replacements:all",
+        "workarounds:all"
+    ],
+    "schedule": ["before 5am"],
+    "prHourlyLimit": 3,
+    "prConcurrentLimit": 3,
+    "enabledManagers": ["npm", "dockerfile", "circleci", "github-actions"],
+    "packageRules": [
+        {
+            "groupName": "all minor dependencies",
+            "groupSlug": "all-minor",
+            "matchPackagePatterns": ["*"],
+            "matchUpdateTypes": ["minor"]
+        },
+        {
+            "matchPackageNames": ["node", "cimg/node"],
+            "versioning": "node"
+        },
+        {
+            "matchPackagePatterns": "^metascraper",
+            "groupName": "metascraper monorepo",
+            "matchUpdateTypes": ["major"]
+        }
+    ]
+}
