@@ -27,12 +27,9 @@ export default function AdminPanel() {
         listLinksAction().then(setLinks)
     }, [])
 
-    const isImage = (value: string) =>
-        value.startsWith("/") || value.startsWith("http")
-
     const handleEditClick = (link: Link) => {
         setFormData({ name: link.name, url: link.url, icon: link.icon })
-        setIconPreview(isImage(link.icon) ? link.icon : null)
+        setIconPreview(link.icon)
         setEditingId(link.id)
     }
 
@@ -134,10 +131,6 @@ export default function AdminPanel() {
                                                         alt="Icon preview"
                                                         className="h-full w-full object-cover"
                                                     />
-                                                ) : formData.icon ? (
-                                                    <span className="text-lg truncate px-1">
-                                                        {formData.icon}
-                                                    </span>
                                                 ) : (
                                                     <span className="text-gray-400">
                                                         +
@@ -246,16 +239,12 @@ export default function AdminPanel() {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-4 flex-1">
                                                 <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                                    {isImage(link.icon) ? (
-                                                        /* eslint-disable-next-line @next/next/no-img-element */
-                                                        <img
-                                                            src={link.icon}
-                                                            alt={link.name}
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    ) : (
-                                                        <span>{link.icon}</span>
-                                                    )}
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img
+                                                        src={link.icon}
+                                                        alt={link.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">

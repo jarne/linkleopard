@@ -44,39 +44,27 @@ export default async function Home() {
                             No links yet.
                         </div>
                     ) : (
-                        links.map((link) => {
-                            const isImage =
-                                link.icon.startsWith("/") ||
-                                link.icon.startsWith("http")
-
-                            return (
-                                <a
-                                    key={link.id}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
-                                >
-                                    {isImage ? (
-                                        <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={link.icon}
-                                                alt={link.name}
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </span>
-                                    ) : (
-                                        <span className="text-2xl">
-                                            {link.icon}
-                                        </span>
-                                    )}
-                                    <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
-                                        {link.name}
-                                    </span>
-                                </a>
-                            )
-                        })
+                        links.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                            >
+                                <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={link.icon}
+                                        alt={link.name}
+                                        className="h-full w-full object-cover"
+                                    />
+                                </span>
+                                <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
+                                    {link.name}
+                                </span>
+                            </a>
+                        ))
                     )}
                 </div>
                 <div className="mt-12 text-center text-sm text-gray-500 dark:text-gray-500">
