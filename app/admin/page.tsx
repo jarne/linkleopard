@@ -127,7 +127,7 @@ export default function AdminPanel() {
                                     </label>
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-3">
-                                            <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xl">
+                                            <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xl">
                                                 {iconPreview ? (
                                                     /* eslint-disable-next-line @next/next/no-img-element */
                                                     <img
@@ -243,7 +243,7 @@ export default function AdminPanel() {
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-4 flex-1">
-                                                <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
                                                         src={link.icon}

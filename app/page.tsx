@@ -52,7 +52,7 @@ export default async function Home() {
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
                             >
-                                <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={link.icon}
