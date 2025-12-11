@@ -27,7 +27,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
-        "format": "prettier --write \"**/*.{ts,tsx,json,html,css,scss,yml,md}\""
+        "format": "prettier --write \"**/*.{ts,tsx,json,html,css,scss,yml,md}\"",
+        "db:push": "drizzle-kit push"
     },
     "dependencies": {
         "@libsql/client": "^0.15.15",

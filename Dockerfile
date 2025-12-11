@@ -30,7 +30,7 @@ WORKDIR /app
 RUN CI=true pnpm install --frozen-lockfile
 
 # Run startup commands
-CMD ["pnpm", "run", "start"]
+CMD ["/bin/sh", "docker-cmd.sh"]
 
 # Open application ports
 EXPOSE 3000
