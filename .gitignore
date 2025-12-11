@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # Local SQLite database
-/local.db
+/*.db
 
 # Image uploads
 /public/uploads
