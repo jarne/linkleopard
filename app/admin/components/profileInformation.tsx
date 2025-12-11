@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useTransition } from "react"
 import { getInfoAction, updateInfoAction } from "./../actions"
+import Button from "@/app/lib/ui/button"
+import TextInput from "@/app/lib/ui/textInput"
 
 export default function ProfileInformation() {
     const [isPending, startTransition] = useTransition()
@@ -119,7 +121,7 @@ export default function ProfileInformation() {
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Name
                     </label>
-                    <input
+                    <TextInput
                         type="text"
                         value={profileData.name}
                         onChange={(e) =>
@@ -129,7 +131,6 @@ export default function ProfileInformation() {
                             })
                         }
                         placeholder="Your Name"
-                        className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                 </div>
                 <div>
@@ -151,7 +152,8 @@ export default function ProfileInformation() {
                 </div>
             </div>
             <div className="mt-4">
-                <button
+                <Button
+                    color="blue"
                     onClick={handleSaveProfile}
                     disabled={
                         isPending ||
@@ -160,10 +162,9 @@ export default function ProfileInformation() {
                         !profileData.bio ||
                         !profileData.profilePicture
                     }
-                    className="px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200"
                 >
                     {isPending ? "Saving..." : "Save Profile"}
-                </button>
+                </Button>
             </div>
         </div>
     )

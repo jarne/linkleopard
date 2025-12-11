@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "../lib/session"
+import Button from "@/app/lib/ui/button"
+import TextInput from "@/app/lib/ui/textInput"
 
 async function loginAction(formData: FormData) {
     "use server"
@@ -39,22 +41,22 @@ export default async function Page() {
                         >
                             Password
                         </label>
-                        <input
+                        <TextInput
                             id="password"
                             name="password"
                             type="password"
                             required
-                            className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="••••••••"
                         />
                     </div>
 
-                    <button
+                    <Button
+                        color="blue"
                         type="submit"
-                        className="inline-flex w-full justify-center rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200"
+                        className="inline-flex w-full justify-center"
                     >
                         Sign in
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

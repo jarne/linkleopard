@@ -9,6 +9,8 @@ import {
     updateLinkAction,
     scrapeLinkMetadataAction,
 } from "./../actions"
+import Button from "@/app/lib/ui/button"
+import TextInput from "@/app/lib/ui/textInput"
 
 export default function LinkManagement() {
     const [links, setLinks] = useState<Link[]>([])
@@ -200,7 +202,7 @@ export default function LinkManagement() {
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Name
                             </label>
-                            <input
+                            <TextInput
                                 type="text"
                                 value={formData.name}
                                 onChange={(e) =>
@@ -210,14 +212,13 @@ export default function LinkManagement() {
                                     })
                                 }
                                 placeholder="e.g., Some Social Platform"
-                                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 URL
                             </label>
-                            <input
+                            <TextInput
                                 type="url"
                                 value={formData.url}
                                 onChange={(e) =>
@@ -227,11 +228,11 @@ export default function LinkManagement() {
                                     })
                                 }
                                 placeholder="https://example.com"
-                                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                         </div>
                         <div className="flex gap-2 pt-4">
-                            <button
+                            <Button
+                                color="blue"
                                 onClick={handleSave}
                                 disabled={
                                     isPending ||
@@ -240,17 +241,13 @@ export default function LinkManagement() {
                                     !formData.url ||
                                     !formData.icon
                                 }
-                                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200"
                             >
                                 {isPending ? "Saving..." : "Save"}
-                            </button>
+                            </Button>
                             {editingId !== null && (
-                                <button
-                                    onClick={resetForm}
-                                    className="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-900 dark:text-white font-semibold rounded-lg transition-colors duration-200"
-                                >
+                                <Button color="gray" onClick={resetForm}>
                                     Cancel
-                                </button>
+                                </Button>
                             )}
                         </div>
                     </div>
@@ -295,22 +292,22 @@ export default function LinkManagement() {
                                         </div>
                                     </div>
                                     <div className="flex gap-2 ml-4">
-                                        <button
+                                        <Button
+                                            color="light-blue"
                                             onClick={() =>
                                                 handleEditClick(link)
                                             }
-                                            className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 font-semibold rounded-lg transition-colors duration-200"
                                         >
                                             Edit
-                                        </button>
-                                        <button
+                                        </Button>
+                                        <Button
+                                            color="red"
                                             onClick={() =>
                                                 handleDelete(link.id)
                                             }
-                                            className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800 font-semibold rounded-lg transition-colors duration-200"
                                         >
                                             Delete
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
