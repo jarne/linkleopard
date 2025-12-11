@@ -33,6 +33,7 @@ export default function AdminPanel() {
     // Auto-scrape metadata when URL changes
     useEffect(() => {
         if (!formData.url) return
+        if (formData.name || formData.icon) return
 
         // Clear previous timeout
         if (scrapeTimeoutRef.current) {
