@@ -35,7 +35,7 @@ export default function ProfileInformation() {
             form.append("file", file)
             form.append("size", "512")
 
-            const res = await fetch("/api/upload", {
+            const res = await fetch("/admin/api/upload", {
                 method: "POST",
                 body: form,
             })

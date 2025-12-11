@@ -82,7 +82,7 @@ export default function LinkManagement() {
             const form = new FormData()
             form.append("file", file)
 
-            const res = await fetch("/api/upload", {
+            const res = await fetch("/admin/api/upload", {
                 method: "POST",
                 body: form,
             })
