@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useRef, useState, useTransition } from "react"
 import type { Link } from "@/app/lib/link"
 import {
     createLinkAction,
@@ -15,6 +15,7 @@ export default function AdminPanel() {
     const [isUploading, setIsUploading] = useState(false)
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [iconPreview, setIconPreview] = useState<string | null>(null)
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
 
     const [editingId, setEditingId] = useState<number | null>(null)
     const [formData, setFormData] = useState({
@@ -97,6 +98,9 @@ export default function AdminPanel() {
         setFormData({ name: "", url: "", icon: "" })
         setIconPreview(null)
         setEditingId(null)
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ""
+        }
     }
 
     return (
@@ -148,6 +152,7 @@ export default function AdminPanel() {
                                                 }}
                                                 disabled={isUploading}
                                                 className="flex-1 text-sm text-gray-700 dark:text-gray-200"
+                                                ref={fileInputRef}
                                             />
                                         </div>
                                         {uploadError && (
