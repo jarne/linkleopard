@@ -6,7 +6,6 @@ export type SessionData = {
     authenticated: boolean
 }
 
-// Configure your session options. Adjust cookieName and password via env.
 export const sessionOptions: SessionOptions = {
     cookieName: process.env.SESSION_COOKIE_NAME || "ll_session",
     password: process.env.SESSION_PASSWORD || "change-this-session-secret",
