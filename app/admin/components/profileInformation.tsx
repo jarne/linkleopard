@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react"
 import { getInfoAction, updateInfoAction } from "./../actions"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
+import Image from "next/image"
 
 /**
  * Component for editing profile information
@@ -94,9 +95,10 @@ export default function ProfileInformation() {
                         <div className="flex items-center gap-3">
                             <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 {profilePicPreview ? (
-                                    /* eslint-disable-next-line @next/next/no-img-element */
-                                    <img
+                                    <Image
                                         src={profilePicPreview}
+                                        width={128}
+                                        height={128}
                                         alt="Profile preview"
                                         className="h-full w-full object-cover"
                                     />

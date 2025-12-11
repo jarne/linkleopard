@@ -11,6 +11,7 @@ import {
 } from "./../actions"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
+import Image from "next/image"
 
 /**
  * Component for managing links in the admin panel, contains
@@ -182,9 +183,10 @@ export default function LinkManagement() {
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xl">
                                         {iconPreview ? (
-                                            /* eslint-disable-next-line @next/next/no-img-element */
-                                            <img
+                                            <Image
                                                 src={iconPreview}
+                                                width={46}
+                                                height={46}
                                                 alt="Icon preview"
                                                 className="h-full w-full object-cover"
                                             />
@@ -290,9 +292,10 @@ export default function LinkManagement() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-4 flex-1">
                                         <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
+                                            <Image
                                                 src={link.icon}
+                                                width={48}
+                                                height={48}
                                                 alt={link.name}
                                                 className="h-full w-full object-cover"
                                             />

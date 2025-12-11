@@ -40,8 +40,9 @@ export default async function PublicPage() {
                         <div className="relative w-24 h-24 md:w-32 md:h-32">
                             <Image
                                 src={profile.profileImage}
+                                width={128}
+                                height={128}
                                 alt={profile.name}
-                                fill
                                 className="rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
                             />
                         </div>
@@ -70,9 +71,10 @@ export default async function PublicPage() {
                                 className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
                             >
                                 <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
+                                    <Image
                                         src={link.icon}
+                                        width={40}
+                                        height={40}
                                         alt={link.name}
                                         className="h-full w-full object-cover"
                                     />
