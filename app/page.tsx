@@ -1,47 +1,20 @@
 import Image from "next/image"
-
-interface Link {
-    name: string
-    url: string
-    icon: string
-}
+import { getAllLinks, type Link } from "./lib/link"
 
 interface Profile {
     name: string
     bio: string
     profileImage: string
-    links: Link[]
 }
 
 const profile: Profile = {
     name: "Jane Doe",
     bio: "Designer & Developer | Creating beautiful digital experiences",
     profileImage: "/profile.jpg",
-    links: [
-        {
-            name: "Portfolio",
-            url: "https://example.com",
-            icon: "🔗",
-        },
-        {
-            name: "Twitter",
-            url: "https://twitter.com",
-            icon: "𝕏",
-        },
-        {
-            name: "GitHub",
-            url: "https://github.com",
-            icon: "⚙️",
-        },
-        {
-            name: "LinkedIn",
-            url: "https://linkedin.com",
-            icon: "💼",
-        },
-    ],
 }
 
-export default function Home() {
+export default async function Home() {
+    const links: Link[] = await getAllLinks()
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 px-4 py-12">
             <main className="w-full max-w-md">
@@ -66,20 +39,26 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="space-y-4">
-                    {profile.links.map((link, index) => (
-                        <a
-                            key={index}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
-                        >
-                            <span className="text-2xl">{link.icon}</span>
-                            <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
-                                {link.name}
-                            </span>
-                        </a>
-                    ))}
+                    {links.length === 0 ? (
+                        <div className="text-center text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg py-10 shadow-sm">
+                            No links yet.
+                        </div>
+                    ) : (
+                        links.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                            >
+                                <span className="text-2xl">{link.icon}</span>
+                                <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
+                                    {link.name}
+                                </span>
+                            </a>
+                        ))
+                    )}
                 </div>
                 <div className="mt-12 text-center text-sm text-gray-500 dark:text-gray-500">
                     <p>Made with LinkLeopard</p>
