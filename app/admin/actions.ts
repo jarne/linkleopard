@@ -36,7 +36,6 @@ export async function scrapeLinkMetadataAction(
     const title = await getUrlTitle(url)
     let favicon = await getUrlFavicon(url)
 
-    // Download and save favicon if found
     if (favicon) {
         try {
             favicon = await downloadAndSaveFavicon(favicon)

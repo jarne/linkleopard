@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
 import { saveProcessedImage } from "@/app/admin/lib/image-processor"
 
+/**
+ * Handle image upload and processing
+ */
 export async function POST(req: Request) {
     const formData = await req.formData()
     const file = formData.get("file")

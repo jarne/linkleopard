@@ -5,6 +5,9 @@ import { getInfoAction, updateInfoAction } from "./../actions"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 
+/**
+ * Component for editing profile information
+ */
 export default function ProfileInformation() {
     const [isPending, startTransition] = useTransition()
     const [isUploading, setIsUploading] = useState(false)
@@ -29,6 +32,9 @@ export default function ProfileInformation() {
         })
     }, [])
 
+    /**
+     * Handle profile picture upload
+     */
     const handleProfilePicUpload = async (file: File) => {
         setIsUploading(true)
         setUploadError(null)
@@ -58,6 +64,9 @@ export default function ProfileInformation() {
         }
     }
 
+    /**
+     * Handle saving profile information
+     */
     const handleSaveProfile = () => {
         if (
             !profileData.name ||

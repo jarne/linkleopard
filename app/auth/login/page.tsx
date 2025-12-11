@@ -3,6 +3,9 @@ import { getSession } from "../lib/session"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 
+/**
+ * Verify submitted password on server side
+ */
 async function loginAction(formData: FormData) {
     "use server"
     const password = formData.get("password")
@@ -14,10 +17,13 @@ async function loginAction(formData: FormData) {
         await session.save()
         redirect("/admin")
     }
-    // Invalid password: silently stay on page (could add feedback later)
+    // TODO: add feedback for invalid password
 }
 
-export default async function Page() {
+/**
+ * Login page for admin panel
+ */
+export default async function LoginPage() {
     const session = await getSession()
     if (session.authenticated) {
         redirect("/admin")

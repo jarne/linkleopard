@@ -12,6 +12,10 @@ import {
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 
+/**
+ * Component for managing links in the admin panel, contains
+ * link list and create/edit form
+ */
 export default function LinkManagement() {
     const [links, setLinks] = useState<Link[]>([])
     const [isPending, startTransition] = useTransition()
@@ -32,7 +36,9 @@ export default function LinkManagement() {
         listLinksAction().then(setLinks)
     }, [])
 
-    // Auto-scrape metadata when URL changes
+    /**
+     * Auto-scrape metadata when URL changes
+     */
     useEffect(() => {
         if (!formData.url) return
         if (formData.name || formData.icon) return
@@ -67,16 +73,21 @@ export default function LinkManagement() {
                 clearTimeout(scrapeTimeoutRef.current)
             }
         }
-        // Only depend on URL, not name/icon to avoid infinite loops
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formData.url])
 
+    /**
+     * Handle edit link click and populate form
+     */
     const handleEditClick = (link: Link) => {
         setFormData({ name: link.name, url: link.url, icon: link.icon })
         setIconPreview(link.icon)
         setEditingId(link.id)
     }
 
+    /**
+     * Handle icon upload in form
+     */
     const handleIconUpload = async (file: File) => {
         setIsUploading(true)
         setUploadError(null)
@@ -105,6 +116,9 @@ export default function LinkManagement() {
         }
     }
 
+    /**
+     * Handle save (create or update) link action of form
+     */
     const handleSave = () => {
         if (!formData.name || !formData.url || !formData.icon) return
 
@@ -128,6 +142,9 @@ export default function LinkManagement() {
         })
     }
 
+    /**
+     * Handle delete link action
+     */
     const handleDelete = (id: number) => {
         startTransition(async () => {
             const ok = await deleteLinkAction(id)
@@ -137,6 +154,9 @@ export default function LinkManagement() {
         })
     }
 
+    /**
+     * Reset form to initial state
+     */
     const resetForm = () => {
         setFormData({ name: "", url: "", icon: "" })
         setIconPreview(null)

@@ -16,6 +16,9 @@ export const sessionOptions: SessionOptions = {
     },
 }
 
+/**
+ * Retrieve the current authentication session
+ */
 export async function getSession() {
     const cookieStore = await cookies()
     const session = await getIronSession<SessionData>(

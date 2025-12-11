@@ -42,17 +42,3 @@ export async function saveProcessedImage(
 
     return `/uploads/${filename}`
 }
-
-/**
- * Save a profile picture (512x512)
- */
-export async function saveProfilePicture(buffer: Buffer): Promise<string> {
-    return saveProcessedImage(buffer, "profile", 512)
-}
-
-/**
- * Save a link icon (64x64)
- */
-export async function saveLinkIcon(buffer: Buffer): Promise<string> {
-    return saveProcessedImage(buffer)
-}

@@ -3,6 +3,9 @@
 import ProfileInformation from "./components/profileInformation"
 import LinkManagement from "./components/linkManagement"
 
+/**
+ * Admin panel page for managing links and profile info
+ */
 export default function AdminPanel() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">

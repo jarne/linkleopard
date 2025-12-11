@@ -7,6 +7,9 @@ const DEFAULT_NAME = "Your Name"
 const DEFAULT_BIO = "Add your bio in the admin panel"
 const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
 
+/**
+ * Generate dynamic metadata based on profile info
+ */
 export async function generateMetadata(): Promise<Metadata> {
     const info = await getInfo()
 
@@ -16,7 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 }
 
-export default async function Home() {
+/**
+ * Public page showing profile info and links
+ */
+export default async function PublicPage() {
     const links: Link[] = await getAllLinks()
     const info = await getInfo()
 
