@@ -1,7 +1,27 @@
 {
     "name": "linkleopard",
-    "version": "0.0.1",
-    "private": true,
+    "version": "0.1.0",
+    "description": "Your link-in-bio hub - customize, share, and own your digital presence in one place",
+    "keywords": [
+        "typescript",
+        "nextjs",
+        "link",
+        "linktree",
+        "link-in-bio"
+    ],
+    "homepage": "https://github.com/jarne/linkleopard",
+    "bugs": {
+        "url": "https://github.com/jarne/linkleopard/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Jarne",
+        "url": "https://github.com/jarne"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jarne/linkleopard.git"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
