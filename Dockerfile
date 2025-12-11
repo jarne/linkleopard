@@ -6,7 +6,10 @@
 FROM node:24
 
 # Default value for database file in Docker container
-ENV DB_FILE_NAME file:/data/db/local.db
+ENV DB_FILE_NAME=file:/data/db/local.db
+
+# Enable Pnpm
+RUN corepack enable pnpm
 
 # Create and switch to app source folder
 WORKDIR /app
@@ -24,7 +27,7 @@ USER node
 WORKDIR /app
 
 # Install dependecies
-RUN pnpm install --frozen-lockfile
+RUN CI=true pnpm install --frozen-lockfile
 
 # Run startup commands
 CMD ["pnpm", "run", "start"]
