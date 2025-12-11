@@ -151,7 +151,7 @@ export default function AdminPanel() {
                                                         handleIconUpload(file)
                                                 }}
                                                 disabled={isUploading}
-                                                className="flex-1 text-sm text-gray-700 dark:text-gray-200"
+                                                className="max-w-36 flex-1 text-sm text-gray-700 dark:text-gray-200"
                                                 ref={fileInputRef}
                                             />
                                         </div>
