@@ -12,6 +12,9 @@
     "dependencies": {
         "@libsql/client": "^0.15.15",
         "drizzle-orm": "^0.45.1",
+        "metascraper": "^5.49.7",
+        "metascraper-logo-favicon": "^5.49.7",
+        "metascraper-title": "^5.49.7",
         "next": "16.0.8",
         "react": "19.2.1",
         "react-dom": "19.2.1"
@@ -28,5 +31,10 @@
         "prettier": "^3.7.4",
         "tailwindcss": "^4",
         "typescript": "^5"
+    },
+    "pnpm": {
+        "overrides": {
+            "cacheable-request": "^13.0.17"
+        }
     }
 }

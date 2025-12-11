@@ -7,6 +7,7 @@ import {
     deleteLinkAction,
     listLinksAction,
     updateLinkAction,
+    scrapeLinkMetadataAction,
 } from "./actions"
 
 export default function AdminPanel() {
@@ -16,6 +17,7 @@ export default function AdminPanel() {
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [iconPreview, setIconPreview] = useState<string | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const scrapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const [editingId, setEditingId] = useState<number | null>(null)
     const [formData, setFormData] = useState({
@@ -27,6 +29,44 @@ export default function AdminPanel() {
     useEffect(() => {
         listLinksAction().then(setLinks)
     }, [])
+
+    // Auto-scrape metadata when URL changes
+    useEffect(() => {
+        if (!formData.url) return
+
+        // Clear previous timeout
+        if (scrapeTimeoutRef.current) {
+            clearTimeout(scrapeTimeoutRef.current)
+        }
+
+        // Debounce scraping by 1 second
+        scrapeTimeoutRef.current = setTimeout(async () => {
+            try {
+                const result = await scrapeLinkMetadataAction(formData.url)
+                setFormData((prev) => ({
+                    ...prev,
+                    name: result.title && !prev.name ? result.title : prev.name,
+                    icon:
+                        result.favicon && !prev.icon
+                            ? result.favicon
+                            : prev.icon,
+                }))
+                if (result.favicon && !formData.icon) {
+                    setIconPreview(result.favicon)
+                }
+            } catch (err) {
+                console.error("Failed to scrape metadata:", err)
+            }
+        }, 1000)
+
+        return () => {
+            if (scrapeTimeoutRef.current) {
+                clearTimeout(scrapeTimeoutRef.current)
+            }
+        }
+        // Only depend on URL, not name/icon to avoid infinite loops
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formData.url])
 
     const handleEditClick = (link: Link) => {
         setFormData({ name: link.name, url: link.url, icon: link.icon })
