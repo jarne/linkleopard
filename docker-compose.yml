@@ -1,0 +1,21 @@
+# docker compose build file
+# for: LinkLeopard
+# created in: 2025 by: @jarne
+
+services:
+    linkleopard:
+        image: ghcr.io/jarne/linkleopard:latest
+        environment:
+            DB_FILE_NAME: file:/data/db/local.db
+            SESSION_PASSWORD: supersecretvaluethatisatleast32characterslong
+            APP_LOGIN_PASSWORD: adminpassword
+        volumes:
+            - app-data:/data/db
+            - upload-files-data:/app/public/uploads
+        ports:
+            - "3000:3000"
+        restart: always
+
+volumes:
+    app-data:
+    upload-files-data:
