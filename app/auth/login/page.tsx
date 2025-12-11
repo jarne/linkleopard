@@ -17,7 +17,6 @@ async function loginAction(formData: FormData) {
         await session.save()
         redirect("/admin")
     }
-    // TODO: add feedback for invalid password
 }
 
 /**
@@ -38,7 +37,6 @@ export default async function LoginPage() {
                 <p className="text-gray-600 dark:text-gray-400">
                     Sign in to the admin panel.
                 </p>
-
                 <form action={loginAction} className="mt-4 space-y-4">
                     <div>
                         <label
@@ -52,10 +50,8 @@ export default async function LoginPage() {
                             name="password"
                             type="password"
                             required
-                            placeholder="••••••••"
                         />
                     </div>
-
                     <Button
                         color="blue"
                         type="submit"
