@@ -1,16 +1,29 @@
 import Image from "next/image"
 import { getAllLinks, type Link } from "./lib/link"
 import { getInfo } from "./lib/info"
+import type { Metadata } from "next"
+
+const DEFAULT_NAME = "Your Name"
+const DEFAULT_BIO = "Add your bio in the admin panel"
+const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
+
+export async function generateMetadata(): Promise<Metadata> {
+    const info = await getInfo()
+
+    return {
+        title: info?.name || DEFAULT_NAME,
+        description: info?.bio || DEFAULT_BIO,
+    }
+}
 
 export default async function Home() {
     const links: Link[] = await getAllLinks()
     const info = await getInfo()
 
-    // Fallback values if no info exists
     const profile = {
-        name: info?.name || "Your Name",
-        bio: info?.bio || "Add your bio in the admin panel",
-        profileImage: info?.profilePicture || "/profile.jpg",
+        name: info?.name || DEFAULT_NAME,
+        bio: info?.bio || DEFAULT_BIO,
+        profileImage: info?.profilePicture || DEFAULT_PROFILE_PICTURE,
     }
 
     return (
