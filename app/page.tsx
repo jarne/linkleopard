@@ -65,9 +65,6 @@ export default async function Home() {
                         ))
                     )}
                 </div>
-                <div className="mt-12 text-center text-sm text-gray-500 dark:text-gray-500">
-                    <p>Made with LinkLeopard</p>
-                </div>
             </main>
         </div>
     )
