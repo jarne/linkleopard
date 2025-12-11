@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server"
-import { randomUUID } from "crypto"
-import { mkdir, writeFile } from "fs/promises"
-import path from "path"
+import { saveProcessedImage } from "@/app/lib/image-processor"
 
 export async function POST(req: Request) {
     const formData = await req.formData()
@@ -11,19 +9,18 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    try {
+        const bytes = await file.arrayBuffer()
+        const buffer = Buffer.from(bytes)
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads")
-    await mkdir(uploadsDir, { recursive: true })
+        const url = await saveProcessedImage(buffer)
 
-    const ext = path.extname(file.name) || ".png"
-    const filename = `${randomUUID()}${ext}`
-    const filepath = path.join(uploadsDir, filename)
-
-    await writeFile(filepath, buffer)
-
-    const url = `/uploads/${filename}`
-
-    return NextResponse.json({ url })
+        return NextResponse.json({ url })
+    } catch (err) {
+        console.error("Error processing image:", err)
+        return NextResponse.json(
+            { error: "Failed to process image" },
+            { status: 500 }
+        )
+    }
 }

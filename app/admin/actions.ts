@@ -9,9 +9,7 @@ import {
 } from "@/app/lib/link"
 import { getInfo, updateInfo, type Info } from "@/app/lib/info"
 import { getUrlTitle, getUrlFavicon } from "./lib/scraper"
-import { randomUUID } from "crypto"
-import { mkdir, writeFile } from "fs/promises"
-import path from "path"
+import { saveProcessedImage } from "@/app/lib/image-processor"
 
 export async function listLinksAction(): Promise<Link[]> {
     return getAllLinks()
@@ -58,27 +56,7 @@ async function downloadAndSaveFavicon(faviconUrl: string): Promise<string> {
     }
 
     const buffer = await response.arrayBuffer()
-    const uploadsDir = path.join(process.cwd(), "public", "uploads")
-    await mkdir(uploadsDir, { recursive: true })
-
-    // Determine file extension from content-type or use png as default
-    const contentType = response.headers.get("content-type") || "image/png"
-    const ext = contentType.includes("svg")
-        ? ".svg"
-        : contentType.includes("ico")
-          ? ".ico"
-          : contentType.includes("png")
-            ? ".png"
-            : contentType.includes("jpeg")
-              ? ".jpg"
-              : ".png"
-
-    const filename = `favicon-${randomUUID()}${ext}`
-    const filepath = path.join(uploadsDir, filename)
-
-    await writeFile(filepath, Buffer.from(buffer))
-
-    return `/uploads/${filename}`
+    return saveProcessedImage(Buffer.from(buffer), "favicon")
 }
 
 export async function getInfoAction(): Promise<Info | undefined> {
