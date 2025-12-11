@@ -73,7 +73,6 @@ The following environment variables need be set:
 | Env variable         | Default Value   | Description                                                            |
 | -------------------- | --------------- | ---------------------------------------------------------------------- |
 | `NODE_ENV`           | `development`   | Set to deployment environment (`production` or `development`)          |
-| `DB_FILE_NAME`       | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db`                |
 | `SESSION_PASSWORD`   |                 | Secret for session management, random string longer than 32 characters |
 | `APP_LOGIN_PASSWORD` |                 | Admin password to log-in in the admin web interface                    |
 
@@ -81,6 +80,7 @@ In addition, the following _optional_ environment variables can be set:
 
 | Env variable          | Default Value | Description                               |
 | --------------------- | ------------- | ----------------------------------------- |
+| `DB_FILE_NAME`       | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db`                |
 | `SESSION_COOKIE_NAME` | `ll_session`  | Name of the authentication session cookie |
 
 ## ⌨️ Development

@@ -11,7 +11,7 @@ async function loginAction(formData: FormData) {
     const password = formData.get("password")
     const session = await getSession()
 
-    const expected = process.env.APP_LOGIN_PASSWORD || "admin"
+    const expected = process.env.APP_LOGIN_PASSWORD!
     if (typeof password === "string" && password === expected) {
         session.authenticated = true
         await session.save()

@@ -8,11 +8,10 @@ export type SessionData = {
 
 export const sessionOptions: SessionOptions = {
     cookieName: process.env.SESSION_COOKIE_NAME || "ll_session",
-    password: process.env.SESSION_PASSWORD || "change-this-session-secret",
+    password: process.env.SESSION_PASSWORD!,
     cookieOptions: {
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV !== "development",
         sameSite: "lax",
-        path: "/",
     },
 }
 
