@@ -4,6 +4,7 @@ import { saveProcessedImage } from "@/app/lib/image-processor"
 export async function POST(req: Request) {
     const formData = await req.formData()
     const file = formData.get("file")
+    const sizeParam = formData.get("size")
 
     if (!file || !(file instanceof File)) {
         return NextResponse.json({ error: "No file provided" }, { status: 400 })
@@ -13,7 +14,8 @@ export async function POST(req: Request) {
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
 
-        const url = await saveProcessedImage(buffer)
+        const size = sizeParam ? parseInt(sizeParam as string, 10) : 64
+        const url = await saveProcessedImage(buffer, "", size)
 
         return NextResponse.json({ url })
     } catch (err) {

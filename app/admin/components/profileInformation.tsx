@@ -33,6 +33,7 @@ export default function ProfileInformation() {
         try {
             const form = new FormData()
             form.append("file", file)
+            form.append("size", "512")
 
             const res = await fetch("/api/upload", {
                 method: "POST",
