@@ -1,23 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import type { Link } from "@/app/lib/link"
+import {
+    createLinkAction,
+    deleteLinkAction,
+    listLinksAction,
+    updateLinkAction,
+} from "./actions"
 
 export default function AdminPanel() {
-    const [links, setLinks] = useState<Link[]>([
-        {
-            id: 1,
-            name: "Portfolio",
-            url: "https://example.com",
-            icon: "🔗",
-        },
-        {
-            id: 2,
-            name: "Twitter",
-            url: "https://twitter.com",
-            icon: "𝕏",
-        },
-    ])
+    const [links, setLinks] = useState<Link[]>([])
+    const [isPending, startTransition] = useTransition()
 
     const [editingId, setEditingId] = useState<number | null>(null)
     const [formData, setFormData] = useState({
@@ -26,30 +20,45 @@ export default function AdminPanel() {
         icon: "",
     })
 
+    useEffect(() => {
+        listLinksAction().then(setLinks)
+    }, [])
+
     const handleEditClick = (link: Link) => {
         setFormData({ name: link.name, url: link.url, icon: link.icon })
         setEditingId(link.id)
     }
 
     const handleSave = () => {
-        if (editingId !== null) {
-            setLinks(
-                links.map((link) =>
-                    link.id === editingId ? { ...link, ...formData } : link
-                )
-            )
-        } else {
-            const newLink: Link = {
-                id: Math.max(...links.map((l) => l.id), 0) + 1,
-                ...formData,
+        if (!formData.name || !formData.url || !formData.icon) return
+
+        startTransition(async () => {
+            if (editingId !== null) {
+                const updated = await updateLinkAction(editingId, formData)
+                if (updated) {
+                    setLinks((prev) =>
+                        prev.map((link) =>
+                            link.id === editingId
+                                ? { ...link, ...updated }
+                                : link
+                        )
+                    )
+                }
+            } else {
+                const created = await createLinkAction(formData)
+                setLinks((prev) => [...prev, created])
             }
-            setLinks([...links, newLink])
-        }
-        resetForm()
+            resetForm()
+        })
     }
 
     const handleDelete = (id: number) => {
-        setLinks(links.filter((link) => link.id !== id))
+        startTransition(async () => {
+            const ok = await deleteLinkAction(id)
+            if (ok) {
+                setLinks((prev) => prev.filter((link) => link.id !== id))
+            }
+        })
     }
 
     const resetForm = () => {
@@ -130,13 +139,14 @@ export default function AdminPanel() {
                                     <button
                                         onClick={handleSave}
                                         disabled={
+                                            isPending ||
                                             !formData.name ||
                                             !formData.url ||
                                             !formData.icon
                                         }
                                         className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors duration-200"
                                     >
-                                        Save
+                                        {isPending ? "Saving..." : "Save"}
                                     </button>
                                     {editingId !== null && (
                                         <button
