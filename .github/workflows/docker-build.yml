@@ -14,7 +14,7 @@ jobs:
             IMAGE_NAME: ${{ github.repository }}
         steps:
             - name: Checkout repo
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: Login at Docker container registry
               uses: docker/login-action@v3
