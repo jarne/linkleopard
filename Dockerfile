@@ -20,6 +20,9 @@ RUN chown node:node /app
 # Add app source code and set permissions to application user
 COPY --chown=node:node ./ ./
 
+# Create data folder for database
+RUN mkdir -p /data/db && chown -R node:node /data
+
 # Switch to non-root user
 USER node
 
@@ -28,6 +31,9 @@ WORKDIR /app
 
 # Install dependecies
 RUN CI=true pnpm install --frozen-lockfile
+
+# Build Next.js application
+RUN pnpm run build
 
 # Run startup commands
 CMD ["/bin/sh", "docker-cmd.sh"]
