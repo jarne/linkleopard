@@ -1,5 +1,4 @@
 onlyBuiltDependencies:
   - esbuild
-  - re2
   - sharp
   - unrs-resolver
