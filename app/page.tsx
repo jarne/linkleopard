@@ -7,6 +7,8 @@ const DEFAULT_NAME = "Your Name"
 const DEFAULT_BIO = "Add your bio in the admin panel"
 const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
 
+export const dynamic = "force-dynamic"
+
 /**
  * Generate dynamic metadata based on profile info
  */
