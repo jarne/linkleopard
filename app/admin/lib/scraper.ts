@@ -2,7 +2,13 @@
  * Extract title from HTML string
  */
 function extractTitle(html: string): string | null {
-    // Try og:title first
+    // Try og:site_name first
+    const ogSiteNameMatch = html.match(
+        /<meta\s+(?=[^>]*property=["']og:site_name["'])[^>]*content=["']([^"']+)["']/i
+    )
+    if (ogSiteNameMatch) return ogSiteNameMatch[1]
+
+    // Try og:title
     const ogTitleMatch = html.match(
         /<meta\s+(?=[^>]*property=["']og:title["'])[^>]*content=["']([^"']+)["']/i
     )
