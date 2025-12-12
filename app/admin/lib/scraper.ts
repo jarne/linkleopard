@@ -29,20 +29,33 @@ function extractFavicon(html: string, baseUrl: string): string | null {
 
     // Priority order: apple-touch-icon, icon, shortcut icon
     const iconPatterns = [
-        /<link\s+(?=[^>]*rel=["']apple-touch-icon["'])[^>]*href=["']([^"']+)["']/i,
-        /<link\s+(?=[^>]*rel=["']icon["'])[^>]*href=["']([^"']+)["']/i,
-        /<link\s+(?=[^>]*rel=["']shortcut icon["'])[^>]*href=["']([^"']+)["']/i,
+        // apple-touch-icon (rel before href and href before rel)
+        [
+            /<link[^>]*\srel=["']apple-touch-icon["'][^>]*\shref=["']([^"']+)["']/i,
+            /<link[^>]*\shref=["']([^"']+)["'][^>]*\srel=["']apple-touch-icon["']/i,
+        ],
+        // icon
+        [
+            /<link[^>]*\srel=["']icon["'][^>]*\shref=["']([^"']+)["']/i,
+            /<link[^>]*\shref=["']([^"']+)["'][^>]*\srel=["']icon["']/i,
+        ],
+        // shortcut icon
+        [
+            /<link[^>]*\srel=["']shortcut icon["'][^>]*\shref=["']([^"']+)["']/i,
+            /<link[^>]*\shref=["']([^"']+)["'][^>]*\srel=["']shortcut icon["']/i,
+        ],
     ]
 
-    for (const pattern of iconPatterns) {
-        const match = html.match(pattern)
-        if (match) {
-            const href = match[1]
-            // Resolve relative URLs
-            try {
-                return new URL(href, base).href
-            } catch {
-                return href
+    for (const patterns of iconPatterns) {
+        for (const pattern of patterns) {
+            const match = html.match(pattern)
+            if (match) {
+                const href = match[1]
+                try {
+                    return new URL(href, base).href
+                } catch {
+                    return href
+                }
             }
         }
     }
