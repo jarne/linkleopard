@@ -23,6 +23,9 @@ COPY --chown=node:node ./ ./
 # Create data folder for database
 RUN mkdir -p /data/db && chown -R node:node /data
 
+# Create uploads folder and set permissions
+RUN mkdir -p /app/public/uploads && chown -R node:node /app/public/uploads
+
 # Switch to non-root user
 USER node
 
