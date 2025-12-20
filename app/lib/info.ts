@@ -5,6 +5,7 @@ export interface Info {
     name: string
     bio: string
     profilePicture: string
+    analyticsCode: string | null
 }
 
 /**
@@ -28,6 +29,7 @@ export async function updateInfo(data: Info): Promise<Info> {
             name: data.name,
             bio: data.bio,
             profilePicture: data.profilePicture,
+            analyticsCode: data.analyticsCode,
         })
         .returning()
 

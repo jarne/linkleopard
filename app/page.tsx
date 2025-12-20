@@ -110,6 +110,11 @@ export default async function PublicPage() {
                     </p>
                 </div>
             </main>
+            {info?.analyticsCode && (
+                <div
+                    dangerouslySetInnerHTML={{ __html: info.analyticsCode }}
+                ></div>
+            )}
         </div>
     )
 }

@@ -13,4 +13,5 @@ export const infoTable = sqliteTable("info", {
     name: text().notNull(),
     bio: text().notNull(),
     profilePicture: text().notNull(),
+    analyticsCode: text().default(""),
 })
