@@ -4,7 +4,7 @@ export const linksTable = sqliteTable("links", {
     id: int().primaryKey({ autoIncrement: true }),
     url: text().notNull(),
     name: text().notNull(),
-    icon: text().notNull(),
+    icon: text().default(""),
     position: int().default(0),
     footer: int().default(0),
 })

@@ -6,7 +6,7 @@ export interface Link {
     id: number
     url: string
     name: string
-    icon: string
+    icon: string | null
     position: number | null
     footer: number | null
 }

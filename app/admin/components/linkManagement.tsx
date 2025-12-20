@@ -107,10 +107,10 @@ export default function LinkManagement() {
         setFormData({
             name: link.name,
             url: link.url,
-            icon: link.icon,
+            icon: link.icon || "",
             footer: link.footer ?? 0,
         })
-        setIconPreview(link.icon)
+        setIconPreview(link.icon || null)
         setEditingId(link.id)
     }
 
@@ -149,7 +149,7 @@ export default function LinkManagement() {
      * Handle save (create or update) link action of form
      */
     const handleSave = () => {
-        if (!formData.name || !formData.url || !formData.icon) return
+        if (!formData.name || !formData.url) return
 
         startTransition(async () => {
             if (editingId !== null) {
@@ -331,8 +331,7 @@ export default function LinkManagement() {
                                     isPending ||
                                     isUploading ||
                                     !formData.name ||
-                                    !formData.url ||
-                                    !formData.icon
+                                    !formData.url
                                 }
                             >
                                 {isPending ? "Saving..." : "Save"}
