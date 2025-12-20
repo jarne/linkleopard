@@ -6,9 +6,11 @@ export type SessionData = {
     authenticated: boolean
 }
 
+const sessionTtlInDays = Number(process.env.SESSION_TTL) || 1
 export const sessionOptions: SessionOptions = {
     cookieName: process.env.SESSION_COOKIE_NAME || "ll_session",
     password: process.env.SESSION_PASSWORD!,
+    ttl: sessionTtlInDays * 86400,
     cookieOptions: {
         secure: process.env.NODE_ENV !== "development",
         sameSite: "lax",

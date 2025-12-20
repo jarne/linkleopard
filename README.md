@@ -82,6 +82,7 @@ In addition, the following _optional_ environment variables can be set:
 | --------------------- | --------------- | ------------------------------------------------------- |
 | `DB_FILE_NAME`        | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db` |
 | `SESSION_COOKIE_NAME` | `ll_session`    | Name of the authentication session cookie               |
+| `SESSION_TTL`         | `1`             | Authentication session lifetime in days                 |
 
 ## ⌨️ Development
 
