@@ -24,6 +24,17 @@ Smart features like **automatic icon and name fetching** save you time: just pas
 
 Your links, your rules—**no third-party hosting, just your brand**.
 
+### Features
+
+- Create your own link-in-bio page
+- User-friendly admin interface
+- Automatic page icon and name fetching
+- Sort links in a custom order
+- Add your profile information to your page
+- Add smaller footer links, such as your privacy policy
+- Insert HTML code for analytics
+- Self-hosted and open source
+
 ### Screenshots
 
 <img src=".github/media/ll-public.png" alt="Public link-in-bio page">
