@@ -1,17 +1,33 @@
 "use client"
 
-import { useEffect, useRef, useState, useTransition } from "react"
 import type { Link } from "@/app/lib/link"
+import Button from "@/app/lib/ui/button"
+import TextInput from "@/app/lib/ui/textInput"
+import {
+    closestCenter,
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core"
+import {
+    arrayMove,
+    SortableContext,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+import Image from "next/image"
+import { useEffect, useRef, useState, useTransition } from "react"
 import {
     createLinkAction,
     deleteLinkAction,
     listLinksAction,
-    updateLinkAction,
+    reorderLinksAction,
     scrapeLinkMetadataAction,
+    updateLinkAction,
 } from "./../actions"
-import Button from "@/app/lib/ui/button"
-import TextInput from "@/app/lib/ui/textInput"
-import Image from "next/image"
+import SortableLinkItem from "./sortableLinkItem"
 
 /**
  * Component for managing links in the admin panel, contains
@@ -25,6 +41,11 @@ export default function LinkManagement() {
     const [iconPreview, setIconPreview] = useState<string | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const scrapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor)
+    )
 
     const [editingId, setEditingId] = useState<number | null>(null)
     const [formData, setFormData] = useState({
@@ -156,6 +177,31 @@ export default function LinkManagement() {
     }
 
     /**
+     * Handle drag end event after reordering links
+     */
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            const oldIndex = links.findIndex((l) => l.id === active.id)
+            const newIndex = links.findIndex((l) => l.id === over.id)
+
+            if (oldIndex !== -1 && newIndex !== -1) {
+                const newLinks = arrayMove(links, oldIndex, newIndex)
+                setLinks(newLinks)
+
+                // Persist order by IDs
+                const orderedIds = newLinks.map((l) => l.id)
+                try {
+                    await reorderLinksAction(orderedIds)
+                } catch (err) {
+                    console.error("Failed to persist order", err)
+                }
+            }
+        }
+    }
+
+    /**
      * Reset form to initial state
      */
     const resetForm = () => {
@@ -283,59 +329,27 @@ export default function LinkManagement() {
                         </p>
                     </div>
                 ) : (
-                    <div className="space-y-3">
-                        {links.map((link) => (
-                            <div
-                                key={link.id}
-                                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-4 flex-1">
-                                        <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
-                                            <Image
-                                                src={link.icon}
-                                                width={48}
-                                                height={48}
-                                                alt={link.name}
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-                                                {link.name}
-                                            </h3>
-                                            <a
-                                                href={link.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-blue-600 dark:text-blue-400 hover:underline truncate block"
-                                            >
-                                                {link.url}
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-2 ml-4">
-                                        <Button
-                                            color="light-blue"
-                                            onClick={() =>
-                                                handleEditClick(link)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            color="red"
-                                            onClick={() =>
-                                                handleDelete(link.id)
-                                            }
-                                        >
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </div>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={links.map((l) => l.id)}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            <div className="space-y-3">
+                                {links.map((link) => (
+                                    <SortableLinkItem
+                                        key={link.id}
+                                        link={link}
+                                        onEdit={handleEditClick}
+                                        onDelete={handleDelete}
+                                    />
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </SortableContext>
+                    </DndContext>
                 )}
             </div>
         </div>
