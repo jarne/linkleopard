@@ -6,8 +6,9 @@ export interface Link {
     id: number
     url: string
     name: string
-    icon: string
+    icon: string | null
     position: number | null
+    footer: number | null
 }
 
 /**
@@ -22,6 +23,7 @@ export async function createLink(
             url: data.url,
             name: data.name,
             icon: data.icon,
+            footer: data.footer,
         })
         .returning()
 

@@ -53,7 +53,7 @@ export default async function PublicPage() {
                         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
                             {profile.name}
                         </h1>
-                        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                             {profile.bio}
                         </p>
                     </div>
@@ -64,29 +64,50 @@ export default async function PublicPage() {
                             No links yet.
                         </div>
                     ) : (
-                        links.map((link) => (
-                            <a
-                                key={link.id}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
-                            >
-                                <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
-                                    <Image
-                                        src={link.icon}
-                                        width={40}
-                                        height={40}
-                                        alt={link.name}
-                                        className="h-full w-full object-cover"
-                                    />
-                                </span>
-                                <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
-                                    {link.name}
-                                </span>
-                            </a>
-                        ))
+                        links
+                            .filter((link) => link.footer === 0)
+                            .map((link) => (
+                                <a
+                                    key={link.id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                                >
+                                    {link.icon && (
+                                        <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
+                                            <Image
+                                                src={link.icon}
+                                                width={40}
+                                                height={40}
+                                                alt={link.name}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </span>
+                                    )}
+                                    <span className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200">
+                                        {link.name}
+                                    </span>
+                                </a>
+                            ))
                     )}
+                </div>
+                <div className="mt-12 text-center">
+                    <p className="text-gray-600 dark:text-gray-400">
+                        {links
+                            .filter((link) => link.footer === 1)
+                            .map((link) => (
+                                <a
+                                    key={link.id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mx-2 inline-flex items-center gap-1 hover:underline"
+                                >
+                                    <span>{link.name}</span>
+                                </a>
+                            ))}
+                    </p>
                 </div>
             </main>
         </div>

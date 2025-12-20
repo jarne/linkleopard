@@ -49,15 +49,17 @@ export default function SortableLinkItem({
                     >
                         ≡
                     </button>
-                    <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
-                        <Image
-                            src={link.icon}
-                            width={48}
-                            height={48}
-                            alt={link.name}
-                            className="h-full w-full object-cover"
-                        />
-                    </div>
+                    {link.icon && (
+                        <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
+                            <Image
+                                src={link.icon}
+                                width={48}
+                                height={48}
+                                alt={link.name}
+                                className="h-full w-full object-cover"
+                            />
+                        </div>
+                    )}
                     <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
                             {link.name}

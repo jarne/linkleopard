@@ -28,6 +28,7 @@ import {
     updateLinkAction,
 } from "./../actions"
 import SortableLinkItem from "./sortableLinkItem"
+import Checkbox from "@/app/lib/ui/checkbox"
 
 /**
  * Component for managing links in the admin panel, contains
@@ -52,6 +53,7 @@ export default function LinkManagement() {
         name: "",
         url: "",
         icon: "",
+        footer: 0,
     })
 
     useEffect(() => {
@@ -102,8 +104,13 @@ export default function LinkManagement() {
      * Handle edit link click and populate form
      */
     const handleEditClick = (link: Link) => {
-        setFormData({ name: link.name, url: link.url, icon: link.icon })
-        setIconPreview(link.icon)
+        setFormData({
+            name: link.name,
+            url: link.url,
+            icon: link.icon || "",
+            footer: link.footer ?? 0,
+        })
+        setIconPreview(link.icon || null)
         setEditingId(link.id)
     }
 
@@ -142,7 +149,7 @@ export default function LinkManagement() {
      * Handle save (create or update) link action of form
      */
     const handleSave = () => {
-        if (!formData.name || !formData.url || !formData.icon) return
+        if (!formData.name || !formData.url) return
 
         startTransition(async () => {
             if (editingId !== null) {
@@ -205,7 +212,7 @@ export default function LinkManagement() {
      * Reset form to initial state
      */
     const resetForm = () => {
-        setFormData({ name: "", url: "", icon: "" })
+        setFormData({ name: "", url: "", icon: "", footer: 0 })
         setIconPreview(null)
         setEditingId(null)
         if (fileInputRef.current) {
@@ -298,6 +305,24 @@ export default function LinkManagement() {
                                 placeholder="https://example.com"
                             />
                         </div>
+                        <div className="flex items-center gap-2">
+                            <Checkbox
+                                id="footer"
+                                checked={formData.footer === 1}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        footer: e.target.checked ? 1 : 0,
+                                    })
+                                }
+                            />
+                            <label
+                                htmlFor="footer"
+                                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >
+                                Show in footer
+                            </label>
+                        </div>
                         <div className="flex gap-2 pt-4">
                             <Button
                                 color="blue"
@@ -306,8 +331,7 @@ export default function LinkManagement() {
                                     isPending ||
                                     isUploading ||
                                     !formData.name ||
-                                    !formData.url ||
-                                    !formData.icon
+                                    !formData.url
                                 }
                             >
                                 {isPending ? "Saving..." : "Save"}
