@@ -39,7 +39,7 @@ export default function SortableLinkItem({
             className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6"
         >
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
                     <button
                         {...attributes}
                         {...listeners}
