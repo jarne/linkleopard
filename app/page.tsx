@@ -53,7 +53,7 @@ export default async function PublicPage() {
                         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
                             {profile.name}
                         </h1>
-                        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                             {profile.bio}
                         </p>
                     </div>
@@ -89,6 +89,23 @@ export default async function PublicPage() {
                                 </a>
                             ))
                     )}
+                </div>
+                <div className="mt-12 text-center">
+                    <p className="text-gray-600 dark:text-gray-400">
+                        {links
+                            .filter((link) => link.footer === 1)
+                            .map((link) => (
+                                <a
+                                    key={link.id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mx-2 inline-flex items-center gap-1 hover:underline"
+                                >
+                                    <span>{link.name}</span>
+                                </a>
+                            ))}
+                    </p>
                 </div>
             </main>
         </div>
