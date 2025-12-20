@@ -6,6 +6,7 @@ import {
     getAllLinks,
     updateLink,
     type Link,
+    updateLinksOrder,
 } from "@/app/lib/link"
 import { getInfo, updateInfo, type Info } from "@/app/lib/info"
 import { getUrlTitle, getUrlFavicon } from "./lib/scraper"
@@ -15,19 +16,28 @@ export async function listLinksAction(): Promise<Link[]> {
     return getAllLinks()
 }
 
-export async function createLinkAction(data: Omit<Link, "id">): Promise<Link> {
+export async function createLinkAction(
+    data: Omit<Link, "id" | "position">
+): Promise<Link> {
     return createLink(data)
 }
 
 export async function updateLinkAction(
     id: number,
-    data: Partial<Omit<Link, "id">>
+    data: Partial<Omit<Link, "id" | "position">>
 ): Promise<Link | undefined> {
     return updateLink(id, data)
 }
 
 export async function deleteLinkAction(id: number): Promise<boolean> {
     return deleteLink(id)
+}
+
+export async function reorderLinksAction(
+    idsInOrder: number[]
+): Promise<boolean> {
+    await updateLinksOrder(idsInOrder)
+    return true
 }
 
 export async function scrapeLinkMetadataAction(

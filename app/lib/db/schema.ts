@@ -5,6 +5,7 @@ export const linksTable = sqliteTable("links", {
     url: text().notNull(),
     name: text().notNull(),
     icon: text().notNull(),
+    position: int().default(0),
 })
 
 export const infoTable = sqliteTable("info", {
