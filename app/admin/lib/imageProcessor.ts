@@ -1,7 +1,7 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { randomUUID } from "crypto"
 import sharp from "sharp"
-import { s3Client } from "./s3Client"
+import { s3Client } from "./s3/s3Client"
 
 /**
  * Process an image: resize to specified dimensions and convert to PNG

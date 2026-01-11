@@ -3,7 +3,7 @@ import Button from "@/app/lib/ui/button"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import Image from "next/image"
-import { buildPublicS3Url } from "../lib/s3Utils"
+import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
 
 /**
  * Sortable link item component, contains link details

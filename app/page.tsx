@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { buildPublicS3Url } from "./admin/lib/s3Utils"
+import { buildPublicS3Url } from "./admin/lib/s3/s3PublicUtils"
 import { getInfo, Info } from "./lib/info"
 import { getAllLinks, type Link } from "./lib/link"
 

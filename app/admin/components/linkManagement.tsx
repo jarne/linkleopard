@@ -20,7 +20,7 @@ import {
 } from "@dnd-kit/sortable"
 import Image from "next/image"
 import { useEffect, useRef, useState, useTransition } from "react"
-import { buildPublicS3Url } from "../lib/s3Utils"
+import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
 import {
     createLinkAction,
     deleteLinkAction,

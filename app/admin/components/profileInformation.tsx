@@ -4,7 +4,7 @@ import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 import Image from "next/image"
 import { useEffect, useRef, useState, useTransition } from "react"
-import { buildPublicS3Url } from "../lib/s3Utils"
+import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
 import { getInfoAction, updateInfoAction } from "./../actions"
 
 /**
