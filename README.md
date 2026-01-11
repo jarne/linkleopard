@@ -86,6 +86,11 @@ The following environment variables need be set:
 | `NODE_ENV`           | `development` | Set to deployment environment (`production` or `development`)          |
 | `SESSION_PASSWORD`   |               | Secret for session management, random string longer than 32 characters |
 | `APP_LOGIN_PASSWORD` |               | Admin password to log-in in the admin web interface                    |
+| `S3_ENDPOINT`        |               | Hostname for S3-compatible endpoint for image storage                  |
+| `S3_REGION`          |               | S3 region to use                                                       |
+| `S3_ACCESS_KEY`      |               | Access key ID for S3 endpoint                                          |
+| `S3_ACCESS_SECRET`   |               | Secret access key for S3 endpoint                                      |
+| `S3_BUCKET`          |               | Name of the S3 bucket                                                  |
 
 In addition, the following _optional_ environment variables can be set:
 
@@ -94,6 +99,7 @@ In addition, the following _optional_ environment variables can be set:
 | `DB_FILE_NAME`        | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db` |
 | `SESSION_COOKIE_NAME` | `ll_session`    | Name of the authentication session cookie               |
 | `SESSION_TTL`         | `1`             | Authentication session lifetime in days                 |
+| `S3_FORCE_PATH_STYLE` | `false`         | Force path style URLs for S3 objects                    |
 
 ## ⌨️ Development
 
