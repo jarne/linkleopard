@@ -58,9 +58,13 @@ git clone https://github.com/jarne/linkleopard.git
 cd linkleopard
 ```
 
-Replace the secret values in the `docker-compose.yml` file before continuing to run the application.
+Then copy the `.env` file template for Docker and replace the secret values in this file.
 
-Finally, start the services using Docker Compose.
+```sh
+cp .env.docker.example .env
+```
+
+As a final step, start the services using Docker Compose.
 
 ```sh
 sudo docker compose up
