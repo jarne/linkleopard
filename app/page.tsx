@@ -1,7 +1,8 @@
-import Image from "next/image"
-import { getAllLinks, type Link } from "./lib/link"
-import { getInfo } from "./lib/info"
 import type { Metadata } from "next"
+import Image from "next/image"
+import { buildPublicS3Url } from "./admin/lib/s3Utils"
+import { getInfo } from "./lib/info"
+import { getAllLinks, type Link } from "./lib/link"
 
 const DEFAULT_NAME = "Your Name"
 const DEFAULT_BIO = "Add your bio in the admin panel"
@@ -41,7 +42,7 @@ export default async function PublicPage() {
                     <div className="mb-6">
                         <div className="relative w-24 h-24 md:w-32 md:h-32">
                             <Image
-                                src={profile.profileImage}
+                                src={buildPublicS3Url(profile.profileImage)}
                                 width={128}
                                 height={128}
                                 alt={profile.name}
@@ -77,7 +78,9 @@ export default async function PublicPage() {
                                     {link.icon && (
                                         <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
                                             <Image
-                                                src={link.icon}
+                                                src={buildPublicS3Url(
+                                                    link.icon
+                                                )}
                                                 width={40}
                                                 height={40}
                                                 alt={link.name}
