@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import { buildPublicS3Url } from "./admin/lib/s3Utils"
-import { getInfo } from "./lib/info"
+import { getInfo, Info } from "./lib/info"
 import { getAllLinks, type Link } from "./lib/link"
 
 const DEFAULT_NAME = "Your Name"
@@ -11,14 +11,27 @@ const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
 export const dynamic = "force-dynamic"
 
 /**
+ * Build profile info object with fallback defaults
+ */
+function buildProfile(info: Info | undefined) {
+    return {
+        name: info?.name || DEFAULT_NAME,
+        bio: info?.bio || DEFAULT_BIO,
+        profileImage: info?.profilePicture || DEFAULT_PROFILE_PICTURE,
+    }
+}
+
+/**
  * Generate dynamic metadata based on profile info
  */
 export async function generateMetadata(): Promise<Metadata> {
     const info = await getInfo()
+    const profile = buildProfile(info)
 
     return {
-        title: info?.name || DEFAULT_NAME,
-        description: info?.bio || DEFAULT_BIO,
+        title: profile.name,
+        description: profile.bio,
+        icons: buildPublicS3Url(profile.profileImage),
     }
 }
 
@@ -28,12 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PublicPage() {
     const links: Link[] = await getAllLinks()
     const info = await getInfo()
-
-    const profile = {
-        name: info?.name || DEFAULT_NAME,
-        bio: info?.bio || DEFAULT_BIO,
-        profileImage: info?.profilePicture || DEFAULT_PROFILE_PICTURE,
-    }
+    const profile = buildProfile(info)
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 px-4 py-12">
