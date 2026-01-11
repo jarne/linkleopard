@@ -2,6 +2,7 @@
 
 import type { Link } from "@/app/lib/link"
 import Button from "@/app/lib/ui/button"
+import Checkbox from "@/app/lib/ui/checkbox"
 import TextInput from "@/app/lib/ui/textInput"
 import {
     closestCenter,
@@ -19,6 +20,7 @@ import {
 } from "@dnd-kit/sortable"
 import Image from "next/image"
 import { useEffect, useRef, useState, useTransition } from "react"
+import { buildPublicS3Url } from "../lib/s3Utils"
 import {
     createLinkAction,
     deleteLinkAction,
@@ -28,7 +30,6 @@ import {
     updateLinkAction,
 } from "./../actions"
 import SortableLinkItem from "./sortableLinkItem"
-import Checkbox from "@/app/lib/ui/checkbox"
 
 /**
  * Component for managing links in the admin panel, contains
@@ -134,9 +135,9 @@ export default function LinkManagement() {
             }
 
             const data = await res.json()
-            const url = data.url as string
-            setFormData((prev) => ({ ...prev, icon: url }))
-            setIconPreview(url)
+            const fileKey = data.fileKey as string
+            setFormData((prev) => ({ ...prev, icon: fileKey }))
+            setIconPreview(fileKey)
         } catch (err) {
             console.error(err)
             setUploadError("Upload failed. Please try again.")
@@ -237,7 +238,9 @@ export default function LinkManagement() {
                                     <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-xl">
                                         {iconPreview ? (
                                             <Image
-                                                src={iconPreview}
+                                                src={buildPublicS3Url(
+                                                    iconPreview
+                                                )}
                                                 width={46}
                                                 height={46}
                                                 alt="Icon preview"

@@ -1,7 +1,7 @@
-import sharp from "sharp"
+import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { randomUUID } from "crypto"
-import { mkdir, writeFile } from "fs/promises"
-import path from "path"
+import sharp from "sharp"
+import { s3Client } from "./s3Client"
 
 /**
  * Process an image: resize to specified dimensions and convert to PNG
@@ -29,16 +29,20 @@ export async function saveProcessedImage(
 ): Promise<string> {
     const processedBuffer = await processImage(buffer, size)
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads")
-    await mkdir(uploadsDir, { recursive: true })
-
     const filename =
         prefix && prefix !== ""
             ? `${prefix}-${randomUUID()}.png`
             : `${randomUUID()}.png`
-    const filepath = path.join(uploadsDir, filename)
 
-    await writeFile(filepath, processedBuffer)
+    await s3Client.send(
+        new PutObjectCommand({
+            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
+            Key: filename,
+            Body: processedBuffer,
+            ContentType: "image/png",
+            CacheControl: "public, max-age=31536000, immutable",
+        })
+    )
 
-    return `/uploads/${filename}`
+    return filename
 }
