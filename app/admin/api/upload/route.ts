@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { saveProcessedImage } from "@/app/admin/lib/image-processor"
+import { saveProcessedImage } from "@/app/admin/lib/imageProcessor"
 
 /**
  * Handle image upload and processing

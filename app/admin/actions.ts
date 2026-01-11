@@ -10,7 +10,7 @@ import {
 } from "@/app/lib/link"
 import { getInfo, updateInfo, type Info } from "@/app/lib/info"
 import { getUrlTitle, getUrlFavicon } from "./lib/scraper"
-import { saveProcessedImage } from "@/app/admin/lib/image-processor"
+import { saveProcessedImage } from "@/app/admin/lib/imageProcessor"
 
 export async function listLinksAction(): Promise<Link[]> {
     return getAllLinks()
