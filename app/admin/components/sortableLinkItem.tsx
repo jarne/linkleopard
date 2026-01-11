@@ -3,6 +3,7 @@ import Button from "@/app/lib/ui/button"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import Image from "next/image"
+import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
 
 /**
  * Sortable link item component, contains link details
@@ -52,7 +53,7 @@ export default function SortableLinkItem({
                     {link.icon && (
                         <div className="text-3xl flex h-12 w-12 items-center justify-center overflow-hidden">
                             <Image
-                                src={link.icon}
+                                src={buildPublicS3Url(link.icon)}
                                 width={48}
                                 height={48}
                                 alt={link.name}

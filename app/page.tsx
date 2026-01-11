@@ -1,7 +1,8 @@
-import Image from "next/image"
-import { getAllLinks, type Link } from "./lib/link"
-import { getInfo } from "./lib/info"
 import type { Metadata } from "next"
+import Image from "next/image"
+import { buildPublicS3Url } from "./admin/lib/s3/s3PublicUtils"
+import { getInfo, Info } from "./lib/info"
+import { getAllLinks, type Link } from "./lib/link"
 
 const DEFAULT_NAME = "Your Name"
 const DEFAULT_BIO = "Add your bio in the admin panel"
@@ -10,14 +11,27 @@ const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
 export const dynamic = "force-dynamic"
 
 /**
+ * Build profile info object with fallback defaults
+ */
+function buildProfile(info: Info | undefined) {
+    return {
+        name: info?.name || DEFAULT_NAME,
+        bio: info?.bio || DEFAULT_BIO,
+        profileImage: info?.profilePicture || DEFAULT_PROFILE_PICTURE,
+    }
+}
+
+/**
  * Generate dynamic metadata based on profile info
  */
 export async function generateMetadata(): Promise<Metadata> {
     const info = await getInfo()
+    const profile = buildProfile(info)
 
     return {
-        title: info?.name || DEFAULT_NAME,
-        description: info?.bio || DEFAULT_BIO,
+        title: profile.name,
+        description: profile.bio,
+        icons: buildPublicS3Url(profile.profileImage),
     }
 }
 
@@ -27,12 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PublicPage() {
     const links: Link[] = await getAllLinks()
     const info = await getInfo()
-
-    const profile = {
-        name: info?.name || DEFAULT_NAME,
-        bio: info?.bio || DEFAULT_BIO,
-        profileImage: info?.profilePicture || DEFAULT_PROFILE_PICTURE,
-    }
+    const profile = buildProfile(info)
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 px-4 py-12">
@@ -41,7 +50,7 @@ export default async function PublicPage() {
                     <div className="mb-6">
                         <div className="relative w-24 h-24 md:w-32 md:h-32">
                             <Image
-                                src={profile.profileImage}
+                                src={buildPublicS3Url(profile.profileImage)}
                                 width={128}
                                 height={128}
                                 alt={profile.name}
@@ -77,7 +86,9 @@ export default async function PublicPage() {
                                     {link.icon && (
                                         <span className="flex h-10 w-10 items-center justify-center overflow-hidden">
                                             <Image
-                                                src={link.icon}
+                                                src={buildPublicS3Url(
+                                                    link.icon
+                                                )}
                                                 width={40}
                                                 height={40}
                                                 alt={link.name}

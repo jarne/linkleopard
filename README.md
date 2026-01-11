@@ -58,9 +58,13 @@ git clone https://github.com/jarne/linkleopard.git
 cd linkleopard
 ```
 
-Replace the secret values in the `docker-compose.yml` file before continuing to run the application.
+Then copy the `.env` file template for Docker and replace the secret values in this file.
 
-Finally, start the services using Docker Compose.
+```sh
+cp .env.docker.example .env
+```
+
+As a final step, start the services using Docker Compose.
 
 ```sh
 sudo docker compose up
@@ -81,19 +85,25 @@ pnpm install
 
 The following environment variables need be set:
 
-| Env variable         | Default Value | Description                                                            |
-| -------------------- | ------------- | ---------------------------------------------------------------------- |
-| `NODE_ENV`           | `development` | Set to deployment environment (`production` or `development`)          |
-| `SESSION_PASSWORD`   |               | Secret for session management, random string longer than 32 characters |
-| `APP_LOGIN_PASSWORD` |               | Admin password to log-in in the admin web interface                    |
+| Env variable              | Default Value | Description                                                            |
+| ------------------------- | ------------- | ---------------------------------------------------------------------- |
+| `NODE_ENV`                | `development` | Set to deployment environment (`production` or `development`)          |
+| `SESSION_PASSWORD`        |               | Secret for session management, random string longer than 32 characters |
+| `APP_LOGIN_PASSWORD`      |               | Admin password to log-in in the admin web interface                    |
+| `NEXT_PUBLIC_S3_ENDPOINT` |               | Hostname for S3-compatible endpoint for image storage                  |
+| `S3_REGION`               |               | S3 region to use                                                       |
+| `S3_ACCESS_KEY`           |               | Access key ID for S3 endpoint                                          |
+| `S3_ACCESS_SECRET`        |               | Secret access key for S3 endpoint                                      |
+| `NEXT_PUBLIC_S3_BUCKET`   |               | Name of the S3 bucket                                                  |
 
 In addition, the following _optional_ environment variables can be set:
 
-| Env variable          | Default Value   | Description                                             |
-| --------------------- | --------------- | ------------------------------------------------------- |
-| `DB_FILE_NAME`        | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db` |
-| `SESSION_COOKIE_NAME` | `ll_session`    | Name of the authentication session cookie               |
-| `SESSION_TTL`         | `1`             | Authentication session lifetime in days                 |
+| Env variable                      | Default Value   | Description                                             |
+| --------------------------------- | --------------- | ------------------------------------------------------- |
+| `DB_FILE_NAME`                    | `file:local.db` | SQLite file name, in the format `file:/path/to/file.db` |
+| `SESSION_COOKIE_NAME`             | `ll_session`    | Name of the authentication session cookie               |
+| `SESSION_TTL`                     | `1`             | Authentication session lifetime in days                 |
+| `NEXT_PUBLIC_S3_FORCE_PATH_STYLE` | `false`         | Force path style URLs for S3 objects                    |
 
 ## ⌨️ Development
 

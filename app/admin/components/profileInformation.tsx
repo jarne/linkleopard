@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState, useTransition } from "react"
-import { getInfoAction, updateInfoAction } from "./../actions"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 import Image from "next/image"
+import { useEffect, useRef, useState, useTransition } from "react"
+import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
+import { getInfoAction, updateInfoAction } from "./../actions"
 
 /**
  * Component for editing profile information
@@ -58,9 +59,9 @@ export default function ProfileInformation() {
             }
 
             const data = await res.json()
-            const url = data.url as string
-            setProfileData((prev) => ({ ...prev, profilePicture: url }))
-            setProfilePicPreview(url)
+            const fileKey = data.fileKey as string
+            setProfileData((prev) => ({ ...prev, profilePicture: fileKey }))
+            setProfilePicPreview(fileKey)
         } catch (err) {
             console.error(err)
             setUploadError("Upload failed. Please try again.")
@@ -100,7 +101,9 @@ export default function ProfileInformation() {
                             <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 {profilePicPreview ? (
                                     <Image
-                                        src={profilePicPreview}
+                                        src={buildPublicS3Url(
+                                            profilePicPreview
+                                        )}
                                         width={128}
                                         height={128}
                                         alt="Profile preview"

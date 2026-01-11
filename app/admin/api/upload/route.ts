@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { saveProcessedImage } from "@/app/admin/lib/image-processor"
+import { saveProcessedImage } from "@/app/admin/lib/imageProcessor"
 
 /**
  * Handle image upload and processing
@@ -18,9 +18,9 @@ export async function POST(req: Request) {
         const buffer = Buffer.from(bytes)
 
         const size = sizeParam ? parseInt(sizeParam as string, 10) : 64
-        const url = await saveProcessedImage(buffer, "", size)
+        const fileKey = await saveProcessedImage(buffer, "", size)
 
-        return NextResponse.json({ url })
+        return NextResponse.json({ fileKey })
     } catch (err) {
         console.error("Error processing image:", err)
         return NextResponse.json(
