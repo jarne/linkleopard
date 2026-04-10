@@ -1,8 +1,8 @@
-name: Lint checks
+name: Build test
 on: [push]
 jobs:
-    eslint:
-        name: Check using eslint
+    build-test:
+        name: Build Next.js app
         runs-on: ubuntu-latest
         permissions:
             id-token: write
@@ -23,5 +23,5 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Run ESLint
-              run: pnpm run lint
+            - name: Build app
+              run: pnpm run build
