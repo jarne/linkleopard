@@ -2,10 +2,12 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:recommended",
+        "helpers:pinGitHubActionDigests",
         "abandonments:recommended",
         "security:minimumReleaseAgeNpm",
         ":maintainLockFilesWeekly",
         ":automergePatch",
+        ":automergeDigest",
         ":disableDependencyDashboard",
         ":prConcurrentLimit10",
         "schedule:daily"
