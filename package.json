@@ -54,7 +54,7 @@
         "eslint-config-next": "16.2.11",
         "prettier": "^3.7.4",
         "tailwindcss": "^4",
-        "typescript": "^6.0.0"
+        "typescript": "^7.0.0"
     },
     "packageManager": "pnpm@11.15.1"
 }
