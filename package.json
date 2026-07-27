@@ -39,8 +39,8 @@
         "drizzle-orm": "^0.45.1",
         "iron-session": "^8.0.4",
         "next": "16.2.11",
-        "react": "19.2.7",
-        "react-dom": "19.2.7",
+        "react": "19.2.8",
+        "react-dom": "19.2.8",
         "sharp": "^0.35.0"
     },
     "devDependencies": {
