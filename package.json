@@ -38,7 +38,7 @@
         "@libsql/client": "^0.18.0",
         "drizzle-orm": "^0.45.1",
         "iron-session": "^9.0.0",
-        "next": "16.3.8",
+        "next": "16.4.0",
         "react": "19.3.0",
         "react-dom": "19.3.0",
         "sharp": "^0.35.0"
@@ -51,10 +51,10 @@
         "dotenv": "^18.0.0",
         "drizzle-kit": "^0.31.8",
         "eslint": "^9",
-        "eslint-config-next": "16.3.8",
+        "eslint-config-next": "16.4.0",
         "prettier": "^3.7.4",
         "tailwindcss": "^4",
         "typescript": "^6.0.0"
     },
-    "packageManager": "pnpm@12.8.2"
+    "packageManager": "pnpm@12.10.1"
 }
