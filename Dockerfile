@@ -3,7 +3,7 @@
 # created in: 2025 by: @jarne
 
 # Begin with Node.js LTS container image
-FROM node:24
+FROM node:26
 
 # Default value for database file in Docker container
 ENV DB_FILE_NAME=file:/data/db/local.db
