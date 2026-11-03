@@ -22,16 +22,18 @@ export async function getInfo(): Promise<Info | undefined> {
  * Since there's only one row, we delete all and insert the new one
  */
 export async function updateInfo(data: Info): Promise<Info> {
-    await db.delete(infoTable)
-    const result = await db
-        .insert(infoTable)
-        .values({
-            name: data.name,
-            bio: data.bio,
-            profilePicture: data.profilePicture,
-            analyticsCode: data.analyticsCode,
-        })
-        .returning()
+    return db.transaction(async (tx) => {
+        await tx.delete(infoTable)
+        const result = await tx
+            .insert(infoTable)
+            .values({
+                name: data.name,
+                bio: data.bio,
+                profilePicture: data.profilePicture,
+                analyticsCode: data.analyticsCode,
+            })
+            .returning()
 
-    return result[0]
+        return result[0]
+    })
 }

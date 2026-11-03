@@ -84,11 +84,12 @@ export async function deleteLink(id: number): Promise<boolean> {
  * persist each link's position based on its index
  */
 export async function updateLinksOrder(idsInOrder: number[]): Promise<void> {
-    for (let i = 0; i < idsInOrder.length; i++) {
-        const id = idsInOrder[i]
-        await db
-            .update(linksTable)
-            .set({ position: i + 1 })
-            .where(eq(linksTable.id, id))
-    }
+    await db.transaction(async (tx) => {
+        for (let i = 0; i < idsInOrder.length; i++) {
+            await tx
+                .update(linksTable)
+                .set({ position: i + 1 })
+                .where(eq(linksTable.id, idsInOrder[i]))
+        }
+    })
 }
