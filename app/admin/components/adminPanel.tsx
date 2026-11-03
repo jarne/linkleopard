@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import Button from "@/app/lib/ui/button"
 import LinkManagement from "./linkManagement"
 import ProfileInformation from "./profileInformation"
@@ -9,10 +8,8 @@ import ProfileInformation from "./profileInformation"
  * Admin panel page for managing links and profile info
  */
 export default function AdminPanel() {
-    const router = useRouter()
-
     const handlePreviewButton = () => {
-        router.push("/")
+        window.open("/", "_blank", "noopener,noreferrer")
     }
 
     return (
