@@ -8,8 +8,8 @@ FROM node:26
 # Default value for database file in Docker container
 ENV DB_FILE_NAME=file:/data/db/local.db
 
-# Enable Pnpm
-RUN corepack enable pnpm
+# Install pnpm
+RUN npm install -g pnpm
 
 # Create and switch to app source folder
 WORKDIR /app
