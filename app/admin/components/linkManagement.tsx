@@ -20,7 +20,7 @@ import {
 } from "@dnd-kit/sortable"
 import Image from "next/image"
 import { useEffect, useRef, useState, useTransition } from "react"
-import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
+import { usePublicS3Url } from "./publicS3UrlContext"
 import {
     createLinkAction,
     deleteLinkAction,
@@ -36,6 +36,7 @@ import SortableLinkItem from "./sortableLinkItem"
  * link list and create/edit form
  */
 export default function LinkManagement() {
+    const buildPublicS3Url = usePublicS3Url()
     const [links, setLinks] = useState<Link[]>([])
     const [isPending, startTransition] = useTransition()
     const [isUploading, setIsUploading] = useState(false)

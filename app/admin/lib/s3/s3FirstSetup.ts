@@ -4,13 +4,14 @@ import {
     PutBucketPolicyCommand,
 } from "@aws-sdk/client-s3"
 import { s3Client } from "./s3Client"
+import { getS3Config } from "./s3Config"
 
 /**
  * Try to create the S3 bucket if it doesn't exist and
  * set the access policy to public read
  */
 export async function tryCreateBucket() {
-    const bucketName = process.env.NEXT_PUBLIC_S3_BUCKET!
+    const bucketName = getS3Config().bucket
 
     try {
         await s3Client.send(

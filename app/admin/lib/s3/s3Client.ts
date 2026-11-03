@@ -1,16 +1,17 @@
 import { S3Client } from "@aws-sdk/client-s3"
+import { getS3Config } from "./s3Config"
 
 function createS3Client() {
+    const { endpoint, forcePathStyle } = getS3Config()
+
     return new S3Client({
         region: process.env.S3_REGION!,
-        endpoint: process.env.NEXT_PUBLIC_S3_ENDPOINT!,
+        endpoint,
         credentials: {
             accessKeyId: process.env.S3_ACCESS_KEY!,
             secretAccessKey: process.env.S3_ACCESS_SECRET!,
         },
-        forcePathStyle: process.env.NEXT_PUBLIC_S3_FORCE_PATH_STYLE
-            ? process.env.NEXT_PUBLIC_S3_FORCE_PATH_STYLE === "true"
-            : false,
+        forcePathStyle,
     })
 }
 

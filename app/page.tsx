@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { buildPublicS3Url } from "./admin/lib/s3/s3PublicUtils"
+import { getS3Config } from "./admin/lib/s3/s3Config"
+import { buildS3Url, getS3BaseUrl } from "./admin/lib/s3/s3UrlBuilder"
 import { getInfo, Info } from "./lib/info"
 import { getAllLinks, type Link } from "./lib/link"
 
@@ -9,6 +10,13 @@ const DEFAULT_BIO = "Add your bio in the admin panel"
 const DEFAULT_PROFILE_PICTURE = "/profile.jpg"
 
 export const dynamic = "force-dynamic"
+
+/**
+ * Build the public URL for an S3 object key
+ */
+function buildPublicS3Url(key: string): string {
+    return buildS3Url(getS3BaseUrl(getS3Config()), key)
+}
 
 /**
  * Build profile info object with fallback defaults
