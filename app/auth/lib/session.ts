@@ -29,3 +29,17 @@ export async function getSession() {
     if (session.authenticated === undefined) session.authenticated = false
     return session
 }
+
+/**
+ * Ensure the current request is authenticated, throws otherwise
+ *
+ * Server actions and route handlers are reachable via direct POST
+ * requests from any route, so they must check this themselves instead
+ * of relying on the proxy matcher
+ */
+export async function requireAuth() {
+    const session = await getSession()
+    if (!session.authenticated) {
+        throw new Error("Unauthorized")
+    }
+}
