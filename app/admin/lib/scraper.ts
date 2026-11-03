@@ -1,3 +1,11 @@
+import { fetchWithTimeout, readBodyWithLimit } from "./fetchUtils"
+
+/**
+ * Maximum amount of HTML read from a page, metadata lives in the
+ * <head> so there's no need to buffer huge pages completely
+ */
+const MAX_HTML_BYTES = 512 * 1024
+
 /**
  * Extract title from HTML string
  */
@@ -70,29 +78,24 @@ function extractFavicon(html: string, baseUrl: string): string | null {
 }
 
 /**
- * Fetch the title of a URL
+ * Fetch a URL once and extract its title and favicon URL
  */
-export async function getUrlTitle(url: string): Promise<string | null> {
+export async function getUrlMetadata(
+    url: string
+): Promise<{ title: string | null; favicon: string | null }> {
     try {
-        const response = await fetch(url, { redirect: "follow" })
-        const html = await response.text()
-        return extractTitle(html)
-    } catch (err) {
-        console.error("Failed to get title from URL:", err)
-        return null
-    }
-}
+        const response = await fetchWithTimeout(url)
+        const body = await readBodyWithLimit(response, MAX_HTML_BYTES, {
+            truncate: true,
+        })
+        const html = body.toString("utf-8")
 
-/**
- * Fetch the favicon URL of a website
- */
-export async function getUrlFavicon(url: string): Promise<string | null> {
-    try {
-        const response = await fetch(url, { redirect: "follow" })
-        const html = await response.text()
-        return extractFavicon(html, url)
+        return {
+            title: extractTitle(html),
+            favicon: extractFavicon(html, response.url || url),
+        }
     } catch (err) {
-        console.error("Failed to get favicon from URL:", err)
-        return null
+        console.error("Failed to get metadata from URL:", err)
+        return { title: null, favicon: null }
     }
 }

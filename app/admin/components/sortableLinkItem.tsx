@@ -3,7 +3,7 @@ import Button from "@/app/lib/ui/button"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import Image from "next/image"
-import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
+import { usePublicS3Url } from "./publicS3UrlContext"
 
 /**
  * Sortable link item component, contains link details
@@ -18,6 +18,8 @@ export default function SortableLinkItem({
     onEdit: (link: Link) => void
     onDelete: (id: number) => void
 }) {
+    const buildPublicS3Url = usePublicS3Url()
+
     const {
         attributes,
         listeners,

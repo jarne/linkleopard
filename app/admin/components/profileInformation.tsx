@@ -4,13 +4,14 @@ import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
 import Image from "next/image"
 import { useEffect, useRef, useState, useTransition } from "react"
-import { buildPublicS3Url } from "../lib/s3/s3PublicUtils"
+import { usePublicS3Url } from "./publicS3UrlContext"
 import { getInfoAction, updateInfoAction } from "./../actions"
 
 /**
  * Component for editing profile information
  */
 export default function ProfileInformation() {
+    const buildPublicS3Url = usePublicS3Url()
     const [isPending, startTransition] = useTransition()
     const [isUploading, setIsUploading] = useState(false)
     const [uploadError, setUploadError] = useState<string | null>(null)

@@ -1,42 +1,22 @@
-"use client"
-
-import { redirect } from "next/navigation"
-import Button from "../lib/ui/button"
-import LinkManagement from "./components/linkManagement"
-import ProfileInformation from "./components/profileInformation"
+import { connection } from "next/server"
+import AdminPanel from "./components/adminPanel"
+import { PublicS3UrlProvider } from "./components/publicS3UrlContext"
+import { getS3Config } from "./lib/s3/s3Config"
+import { getS3BaseUrl } from "./lib/s3/s3UrlBuilder"
 
 /**
- * Admin panel page for managing links and profile info
+ * Admin panel page, resolves runtime configuration on the server
+ * and passes it to the client components
  */
-export default function AdminPanel() {
-    const handlePreviewButton = () => {
-        redirect("/")
-    }
+export default async function AdminPage() {
+    // Render on every request so environment variables are read at runtime
+    await connection()
+
+    const publicS3BaseUrl = getS3BaseUrl(getS3Config())
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
-            <div className="max-w-6xl mx-auto px-4 py-12">
-                <div className="flex items-center justify-between flex-1 mb-8">
-                    <div>
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                            LinkLeopard
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-400">
-                            Manage your shared bio links in the admin panel
-                        </p>
-                    </div>
-                    <div>
-                        <Button
-                            color="light-blue"
-                            onClick={handlePreviewButton}
-                        >
-                            Preview site
-                        </Button>
-                    </div>
-                </div>
-                <LinkManagement />
-                <ProfileInformation />
-            </div>
-        </div>
+        <PublicS3UrlProvider baseUrl={publicS3BaseUrl}>
+            <AdminPanel />
+        </PublicS3UrlProvider>
     )
 }

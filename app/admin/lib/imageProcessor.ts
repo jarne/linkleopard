@@ -2,6 +2,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { randomUUID } from "crypto"
 import sharp from "sharp"
 import { s3Client } from "./s3/s3Client"
+import { getS3Config } from "./s3/s3Config"
 
 /**
  * Process an image: resize to specified dimensions and convert to PNG
@@ -36,7 +37,7 @@ export async function saveProcessedImage(
 
     await s3Client.send(
         new PutObjectCommand({
-            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
+            Bucket: getS3Config().bucket,
             Key: filename,
             Body: processedBuffer,
             ContentType: "image/png",
