@@ -42,7 +42,6 @@ export default function LinkManagement() {
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [iconPreview, setIconPreview] = useState<string | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
-    const scrapeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -68,15 +67,15 @@ export default function LinkManagement() {
         if (!formData.url) return
         if (formData.name || formData.icon) return
 
-        // Clear previous timeout
-        if (scrapeTimeoutRef.current) {
-            clearTimeout(scrapeTimeoutRef.current)
-        }
+        // Ignore results of scrapes for outdated URLs or after unmount
+        let cancelled = false
 
         // Debounce scraping by 1 second
-        scrapeTimeoutRef.current = setTimeout(async () => {
+        const timeout = setTimeout(async () => {
             try {
                 const result = await scrapeLinkMetadataAction(formData.url)
+                if (cancelled) return
+
                 setFormData((prev) => ({
                     ...prev,
                     name: result.title && !prev.name ? result.title : prev.name,
@@ -85,8 +84,8 @@ export default function LinkManagement() {
                             ? result.favicon
                             : prev.icon,
                 }))
-                if (result.favicon && !formData.icon) {
-                    setIconPreview(result.favicon)
+                if (result.favicon) {
+                    setIconPreview((prev) => prev || result.favicon)
                 }
             } catch (err) {
                 console.error("Failed to scrape metadata:", err)
@@ -94,9 +93,8 @@ export default function LinkManagement() {
         }, 1000)
 
         return () => {
-            if (scrapeTimeoutRef.current) {
-                clearTimeout(scrapeTimeoutRef.current)
-            }
+            cancelled = true
+            clearTimeout(timeout)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formData.url])
