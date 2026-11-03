@@ -1,6 +1,6 @@
 "use client"
 
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import Button from "../lib/ui/button"
 import LinkManagement from "./components/linkManagement"
 import ProfileInformation from "./components/profileInformation"
@@ -9,8 +9,10 @@ import ProfileInformation from "./components/profileInformation"
  * Admin panel page for managing links and profile info
  */
 export default function AdminPanel() {
+    const router = useRouter()
+
     const handlePreviewButton = () => {
-        redirect("/")
+        router.push("/")
     }
 
     return (
