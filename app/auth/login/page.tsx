@@ -1,7 +1,17 @@
+import { createHash, timingSafeEqual } from "crypto"
 import { redirect } from "next/navigation"
 import { getSession } from "../lib/session"
 import Button from "@/app/lib/ui/button"
 import TextInput from "@/app/lib/ui/textInput"
+
+/**
+ * Compare two strings in constant time
+ */
+function safeEqual(a: string, b: string): boolean {
+    const hashA = createHash("sha256").update(a).digest()
+    const hashB = createHash("sha256").update(b).digest()
+    return timingSafeEqual(hashA, hashB)
+}
 
 /**
  * Verify submitted password on server side
@@ -12,7 +22,11 @@ async function loginAction(formData: FormData) {
     const session = await getSession()
 
     const expected = process.env.APP_LOGIN_PASSWORD!
-    if (typeof password === "string" && password === expected) {
+    if (
+        typeof password === "string" &&
+        expected &&
+        safeEqual(password, expected)
+    ) {
         session.authenticated = true
         await session.save()
         redirect("/admin")
