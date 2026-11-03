@@ -1,6 +1,7 @@
 "use client"
 
 import Button from "@/app/lib/ui/button"
+import { logoutAction } from "../actions"
 import LinkManagement from "./linkManagement"
 import ProfileInformation from "./profileInformation"
 
@@ -24,13 +25,18 @@ export default function AdminPanel() {
                             Manage your shared bio links in the admin panel
                         </p>
                     </div>
-                    <div>
+                    <div className="flex gap-2">
                         <Button
                             color="light-blue"
                             onClick={handlePreviewButton}
                         >
                             Preview site
                         </Button>
+                        <form action={logoutAction}>
+                            <Button color="gray" type="submit">
+                                Log out
+                            </Button>
+                        </form>
                     </div>
                 </div>
                 <LinkManagement />

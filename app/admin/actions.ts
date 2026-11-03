@@ -9,7 +9,8 @@ import {
     updateLinksOrder,
 } from "@/app/lib/link"
 import { getInfo, updateInfo, type Info } from "@/app/lib/info"
-import { requireAuth } from "@/app/auth/lib/session"
+import { redirect } from "next/navigation"
+import { getSession, requireAuth } from "@/app/auth/lib/session"
 import { getUrlMetadata } from "./lib/scraper"
 import { fetchWithTimeout, readBodyWithLimit } from "./lib/fetchUtils"
 import { saveProcessedImage } from "@/app/admin/lib/imageProcessor"
@@ -89,4 +90,10 @@ export async function getInfoAction(): Promise<Info | undefined> {
 export async function updateInfoAction(data: Info): Promise<Info> {
     await requireAuth()
     return updateInfo(data)
+}
+
+export async function logoutAction(): Promise<void> {
+    const session = await getSession()
+    session.destroy()
+    redirect("/auth/login")
 }
