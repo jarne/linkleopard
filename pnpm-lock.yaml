@@ -195,7 +195,7 @@ importers:
         version: 0.45.4(@libsql/client@0.18.0)
       iron-session:
         specifier: ^9.0.0
-        version: 9.1.0
+        version: 9.1.1
       next:
         specifier: 16.4.6
         version: 16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@types/node@26.6.6)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -2247,8 +2247,8 @@ packages:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
 
-  iron-session@9.1.0:
-    resolution: {integrity: sha512-ev5xEgYgRcG3tSUMlX5i9fL/AedBYqDOnojk7Ihqs/scFDQ2u4FzwZybhYkJasCSKeIong128SCQlSbvWu9s0g==}
+  iron-session@9.1.1:
+    resolution: {integrity: sha512-3lp4fCD9hJlcN65n0C4hYFF3ZPcRnQlOI4foKachDiu6fnYhNG8qWUF7UXMKV6X8N8bCprBh+FnX/0ZoSOdgMg==}
     engines: {node: '>=22.13.0'}
 
   iron-webcrypto@2.0.0:
@@ -4965,7 +4965,7 @@ snapshots:
       hasown: 2.0.4
       side-channel: 1.1.1
 
-  iron-session@9.1.0:
+  iron-session@9.1.1:
     dependencies:
       cookie: 2.0.2
       iron-webcrypto: 2.0.0
